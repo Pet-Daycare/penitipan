@@ -1,6 +1,6 @@
-package id.ac.ui.cs.advprog.tutorial5.model.order;
+package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order;
 
-import id.ac.ui.cs.advprog.tutorial5.model.medicine.Medicine;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.medicine.Medicine;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

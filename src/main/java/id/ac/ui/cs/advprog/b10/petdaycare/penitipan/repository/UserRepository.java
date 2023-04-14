@@ -1,6 +1,6 @@
-package id.ac.ui.cs.advprog.tutorial5.repository;
+package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository;
 
-import id.ac.ui.cs.advprog.tutorial5.model.auth.User;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.auth.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

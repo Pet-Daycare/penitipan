@@ -1,7 +1,7 @@
-package id.ac.ui.cs.advprog.tutorial5.model.auth;
+package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.auth;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import id.ac.ui.cs.advprog.tutorial5.model.order.Order;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Order;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,10 +43,9 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(role.equals("ADMIN")) {
-            return ApplicationUserRole.ADMIN.getGrantedAuthority();
         } else {
-            return ApplicationUserRole.USER.getGrantedAuthority();
         }
+        return null;
     }
 
     @Override

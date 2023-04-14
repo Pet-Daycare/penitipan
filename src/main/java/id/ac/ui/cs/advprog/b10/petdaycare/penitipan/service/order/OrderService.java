@@ -1,9 +1,9 @@
-package id.ac.ui.cs.advprog.tutorial5.service.order;
+package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.order;
 
-import id.ac.ui.cs.advprog.tutorial5.dto.order.OrderRequest;
-import id.ac.ui.cs.advprog.tutorial5.dto.order.OrderAdminResponse;
-import id.ac.ui.cs.advprog.tutorial5.dto.order.OrderUserResponse;
-import id.ac.ui.cs.advprog.tutorial5.model.order.Order;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.OrderAdminResponse;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.OrderRequest;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.OrderUserResponse;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

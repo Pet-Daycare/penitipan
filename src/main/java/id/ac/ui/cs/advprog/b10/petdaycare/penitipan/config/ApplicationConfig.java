@@ -1,6 +1,6 @@
 package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.config;
 
-import id.ac.ui.cs.advprog.tutorial5.repository.UserRepository;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

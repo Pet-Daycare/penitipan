@@ -1,4 +1,4 @@
-package id.ac.ui.cs.advprog.tutorial5.model.auth;
+package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.auth;
 
 public enum ApplicationUserPermission {
     MEDICINE_READ("medicine:read"),

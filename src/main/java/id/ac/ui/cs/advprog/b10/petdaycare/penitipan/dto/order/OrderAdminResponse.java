@@ -1,7 +1,7 @@
 package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order;
 
-import id.ac.ui.cs.advprog.tutorial5.model.order.Order;
-import id.ac.ui.cs.advprog.tutorial5.model.order.OrderDetails;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Order;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.OrderDetails;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

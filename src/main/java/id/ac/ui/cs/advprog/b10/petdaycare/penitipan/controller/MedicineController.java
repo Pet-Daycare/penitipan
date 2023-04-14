@@ -1,6 +1,6 @@
 package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.controller;
 
-import id.ac.ui.cs.advprog.tutorial5.dto.MedicineRequest;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.MedicineRequest;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.medicine.Medicine;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.medicine.MedicineService;
 import lombok.RequiredArgsConstructor;

@@ -1,10 +1,10 @@
 package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.medicine;
 
-import id.ac.ui.cs.advprog.tutorial5.dto.MedicineRequest;
-import id.ac.ui.cs.advprog.tutorial5.exceptions.MedicineDoesNotExistException;
-import id.ac.ui.cs.advprog.tutorial5.model.medicine.Medicine;
-import id.ac.ui.cs.advprog.tutorial5.model.medicine.MedicineCategory;
-import id.ac.ui.cs.advprog.tutorial5.repository.MedicineRepository;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.MedicineRequest;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.MedicineDoesNotExistException;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.medicine.Medicine;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.medicine.MedicineCategory;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.MedicineRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

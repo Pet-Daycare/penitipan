@@ -1,7 +1,7 @@
 package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.medicine;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import id.ac.ui.cs.advprog.tutorial5.model.order.OrderDetails;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.OrderDetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

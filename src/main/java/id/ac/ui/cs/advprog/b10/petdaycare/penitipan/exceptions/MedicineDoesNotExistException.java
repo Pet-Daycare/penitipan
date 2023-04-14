@@ -1,4 +1,4 @@
-package id.ac.ui.cs.advprog.tutorial5.exceptions;
+package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions;
 
 public class MedicineDoesNotExistException extends RuntimeException {
 
