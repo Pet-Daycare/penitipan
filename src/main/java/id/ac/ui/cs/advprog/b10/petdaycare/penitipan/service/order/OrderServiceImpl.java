@@ -86,7 +86,7 @@ public class OrderServiceImpl implements OrderService {
                 throw new MedicineDoesNotExistException(details.getMedicineId());
             }
 
-            // Update Order includes the updates of OrderDetails.
+            // Update Order includes the updates of OrderDetails
             // There are 3 scenarios of OrderDetails update:
             // 1. OrderDetails exists both in Database and Put Request
             // 2. OrderDetails exists only in Put Request
