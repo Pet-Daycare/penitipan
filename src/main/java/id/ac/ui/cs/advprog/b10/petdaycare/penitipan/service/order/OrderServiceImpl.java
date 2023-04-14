@@ -10,7 +10,7 @@ import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.OrderDetails;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.MedicineRepository;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.OrderRepository;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.UserRepository;
-import id.ac.ui.cs.advprog.tutorial5.repository.OrderDetailsRepository;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.OrderDetailsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
