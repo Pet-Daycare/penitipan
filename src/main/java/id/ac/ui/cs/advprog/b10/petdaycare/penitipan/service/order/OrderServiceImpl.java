@@ -90,7 +90,7 @@ public class OrderServiceImpl implements OrderService {
             // There are 3 scenarios of OrderDetails update:
             // 1. OrderDetails exists both in Database and Put Request
             // 2. OrderDetails exists only in Put Request
-            // 3. OrderDetails exists only in Database
+            // 3. OrderDetails exists only in Database.
 
             var orderDetails = orderDetailsRepository.findByOrderIdAndMedicineId(order.getId(), medicine.get().getId());
             if (orderDetails.isEmpty()) {
