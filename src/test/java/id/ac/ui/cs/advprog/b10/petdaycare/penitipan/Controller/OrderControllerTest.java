@@ -1,12 +1,12 @@
 package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.Controller;
 
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.Util;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.controller.OrderController;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.OrderAdminResponse;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.OrderRequest;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.OrderUserResponse;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.auth.User;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Order;
-import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.JwtService;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.order.OrderServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,9 +43,6 @@ class OrderControllerTest {
 
     @MockBean
     private OrderServiceImpl service;
-
-    @MockBean
-    private JwtService jwtService;
 
     @Mock
     User user;
