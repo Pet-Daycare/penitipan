@@ -29,7 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class HewanControllerTest {
 
-    @Autowired
     private MockMvc mvc;
 
     @MockBean
