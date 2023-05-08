@@ -43,7 +43,6 @@ class HewanControllerTest {
                 .nama("Hayase Yuuka")
                 .beratHewan("50Kg")
                 .tipeHewan("Anaconda")
-                // TODO : Implement test menggunakan date yang lebih sesuai dengan real usage
                 .tanggalPenitipan(new Date())
                 .tanggalPengambilan(new Date())
                 .build();

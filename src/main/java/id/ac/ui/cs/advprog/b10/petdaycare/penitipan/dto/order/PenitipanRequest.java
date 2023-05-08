@@ -19,4 +19,5 @@ public class PenitipanRequest {
     private String pesanPenitipan;
     private Date tanggalPenitipan;
     private Date tanggalPengambilan;
+    private Date tanggalDiambil;
 }
