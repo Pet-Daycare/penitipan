@@ -32,9 +32,6 @@ public class HewanServiceImpl implements HewanService {
                 .nama(request.getNama())
                 .tipeHewan(request.getTipeHewan())
                 .beratHewan(request.getBeratHewan())
-                .pesanPenitipan(request.getPesanPenitipan())
-                .tanggalPenitipan(request.getTanggalPenitipan())
-                .tanggalPengambilan(request.getTanggalPengambilan())
                 .build();
         return hewanRepository.save(hewan);
     }
@@ -48,9 +45,6 @@ public class HewanServiceImpl implements HewanService {
                 .nama(request.getNama())
                 .tipeHewan(request.getTipeHewan())
                 .beratHewan(request.getBeratHewan())
-                .pesanPenitipan(request.getPesanPenitipan())
-                .tanggalPenitipan(request.getTanggalPenitipan())
-                .tanggalPengambilan(request.getTanggalPengambilan())
                 .build();
         return this.hewanRepository.save(hewan);
     }
