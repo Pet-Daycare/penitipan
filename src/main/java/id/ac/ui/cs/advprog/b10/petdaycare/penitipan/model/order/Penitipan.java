@@ -20,7 +20,10 @@ public class Penitipan {
     @Id
     @GeneratedValue
     private Integer id;
-    // TODO : Hubungkan dengan user yang melakukan penitipan
+    // TODO : Hubungkan dengan user yang melakukan penitipan melalui auth
+    @ManyToOne
+    @JoinColumn(name = "_user_id", nullable = false)
+    private User user;
 
     // TODO : Pastikan asumsi satu penitipan hanya menitipkan satu hewan benar
     @OneToOne
@@ -30,4 +33,5 @@ public class Penitipan {
     private String pesanPenitipan;
     private Date tanggalPenitipan;
     private Date tanggalPengambilan;
+    private Date tanggalDiambil;
 }
