@@ -1,6 +1,5 @@
 package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order;
 
-
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.hewan.Hewan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Penitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.StatusPenitipan;
@@ -15,8 +14,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PenitipanAdminRequest {
-    private Integer userId;
+public class PenitipanUserResponse {
     private Integer penitipanId;
     private Hewan hewan;
     private StatusPenitipan statusPenitipan;
@@ -25,9 +23,8 @@ public class PenitipanAdminRequest {
     private Date tanggalPengambilan;
     private Date tanggalDiambil;
 
-    public static PenitipanAdminRequest fromPenitipan(Penitipan penitipan){
-        return PenitipanAdminRequest.builder()
-                .userId(penitipan.getUser().getId()) // TODO : Buat hubungan ke class user di auth
+    public static PenitipanUserResponse fromPenitipan(Penitipan penitipan) {
+        return PenitipanUserResponse.builder()
                 .penitipanId(penitipan.getId())
                 .hewan(penitipan.getHewan())
                 .tanggalPenitipan(penitipan.getTanggalPenitipan())

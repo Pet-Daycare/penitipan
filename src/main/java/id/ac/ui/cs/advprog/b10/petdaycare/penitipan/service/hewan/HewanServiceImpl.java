@@ -1,7 +1,7 @@
 package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.hewan;
 
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.HewanRequest;
-import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.HewanDoesnotException;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.HewanDoesNotExistException;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.hewan.Hewan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.HewanRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class HewanServiceImpl implements HewanService {
     @Override
     public Hewan findById(Integer id) {
         if (isHewanDoesNotExist(id)){
-            throw new HewanDoesnotException(id);
+            throw new HewanDoesNotExistException(id);
         }
         return hewanRepository.findById(id).get();
     }
@@ -39,7 +39,7 @@ public class HewanServiceImpl implements HewanService {
     @Override
     public Hewan update(Integer id, HewanRequest request) {
         if (isHewanDoesNotExist(id)) {
-            throw new HewanDoesnotException(id);
+            throw new HewanDoesNotExistException(id);
         }
         Hewan hewan = Hewan.builder()
                 .nama(request.getNama())
@@ -52,7 +52,7 @@ public class HewanServiceImpl implements HewanService {
     @Override
     public void delete(Integer id) {
         if (isHewanDoesNotExist(id)){
-            throw new HewanDoesnotException(id);
+            throw new HewanDoesNotExistException(id);
         }
         else{
             hewanRepository.deleteById(id);

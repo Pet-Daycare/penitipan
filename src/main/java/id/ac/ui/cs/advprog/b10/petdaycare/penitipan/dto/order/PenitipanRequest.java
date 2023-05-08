@@ -15,9 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class PenitipanRequest {
     private Hewan hewan;
-    private StatusPenitipan statusPenitipan;
     private String pesanPenitipan;
     private Date tanggalPenitipan;
     private Date tanggalPengambilan;
-    private Date tanggalDiambil;
 }
