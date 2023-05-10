@@ -36,7 +36,8 @@ public class HewanServiceImpl implements HewanService {
                 .tipeHewan(request.getTipeHewan())
                 .beratHewan(request.getBeratHewan())
                 .build();
-        return hewanRepository.save(hewan);
+        hewanRepository.save(hewan);
+        return hewan;
     }
 
     @Override
@@ -49,7 +50,8 @@ public class HewanServiceImpl implements HewanService {
                 .tipeHewan(request.getTipeHewan())
                 .beratHewan(request.getBeratHewan())
                 .build();
-        return this.hewanRepository.save(hewan);
+        hewanRepository.save(hewan);
+        return hewan;
     }
 
     @Override

@@ -43,8 +43,6 @@ class HewanControllerTest {
                 .nama("Hayase Yuuka")
                 .beratHewan("50Kg")
                 .tipeHewan("Anaconda")
-                .tanggalPenitipan(new Date())
-                .tanggalPengambilan(new Date())
                 .build();
 
         bodyContent = new Object() {

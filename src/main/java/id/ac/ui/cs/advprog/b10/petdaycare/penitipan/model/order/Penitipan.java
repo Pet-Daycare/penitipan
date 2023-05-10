@@ -23,10 +23,9 @@ public class Penitipan {
     // TODO : Hubungkan dengan user yang melakukan penitipan melalui auth
     @ManyToOne
     @JoinColumn(name = "_user_id", nullable = false)
-    private User user;
+    //private User user;
 
     // TODO : Pastikan asumsi satu penitipan hanya menitipkan satu hewan benar
-    @OneToOne
     private Hewan hewan;
     @Enumerated(EnumType.STRING)
     private StatusPenitipan statusPenitipan;

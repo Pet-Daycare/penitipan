@@ -32,13 +32,13 @@ public class PenitipanServiceImpl implements PenitipanService{
                 .toList();
     }
 
-    @Override
-    public List<PenitipanUserResponse> findAllByUserId(Integer userId) {
-        return penitipanRepository.findAllByUserId(userId)
-                .stream()
-                .map(PenitipanUserResponse::fromPenitipan)
-                .toList();
-    }
+    //@Override
+    //public List<PenitipanUserResponse> findAllByUserId(Integer userId) {
+    //    return penitipanRepository.findAllByUserId(userId)
+    //            .stream()
+    //            .map(PenitipanUserResponse::fromPenitipan)
+    //            .toList();
+    //}
 
     @Override
     public Penitipan findById(Integer id) {
@@ -57,7 +57,7 @@ public class PenitipanServiceImpl implements PenitipanService{
             throw new HewanDoesNotExistException(idHewan);
         }
         var penitipan = Penitipan.builder()
-                .user()// Todo Hubungkan dengan authentication microservice
+                //.user()// Todo Hubungkan dengan authentication microservice
                 .hewan(penitipanRequest.getHewan())
                 .tanggalPenitipan(penitipanRequest.getTanggalPenitipan())
                 .tanggalPengambilan(penitipanRequest.getTanggalPengambilan())
@@ -79,7 +79,7 @@ public class PenitipanServiceImpl implements PenitipanService{
         }
         var penitipan = Penitipan.builder()
                 .id(id)
-                .user()// Todo Hubungkan dengan authentication microservice
+               // .user()// Todo Hubungkan dengan authentication microservice
                 .hewan(penitipanRequest.getHewan())
                 .tanggalPenitipan(penitipanRequest.getTanggalPenitipan())
                 .tanggalPengambilan(penitipanRequest.getTanggalPengambilan())
@@ -97,6 +97,29 @@ public class PenitipanServiceImpl implements PenitipanService{
             throw new PenitipanDoesNotExistException(id);
         }
         penitipanRepository.deleteById(id);
+    }
+
+    @Override
+    public Penitipan verify(Integer userId, Integer id, PenitipanRequest penitipanRequest){
+        if (isPenitipanDoesNotExist(id)) {
+            throw new PenitipanDoesNotExistException(id);
+        }
+        Integer idHewan = penitipanRequest.getHewan().getId();
+        if (isHewanDoesNotExist(idHewan)){
+            throw new HewanDoesNotExistException(idHewan);
+        }
+        var penitipan = Penitipan.builder()
+                .id(id)
+                // .user()// Todo Hubungkan dengan authentication microservice
+                .hewan(penitipanRequest.getHewan())
+                .tanggalPenitipan(penitipanRequest.getTanggalPenitipan())
+                .tanggalPengambilan(penitipanRequest.getTanggalPengambilan())
+                .statusPenitipan(StatusPenitipan.VERIFIED_PENITIPAN)
+                .pesanPenitipan(penitipanRequest.getPesanPenitipan())
+                .build();
+        penitipanRepository.save(penitipan);
+
+        return penitipan;
     }
 
     private boolean isPenitipanDoesNotExist(Integer id) {
