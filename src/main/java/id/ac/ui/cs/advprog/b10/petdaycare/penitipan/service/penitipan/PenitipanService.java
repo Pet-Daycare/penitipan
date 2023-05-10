@@ -12,11 +12,11 @@ import java.util.List;
 public interface PenitipanService {
     List<PenitipanAdminResponse> findAll();
     //List<PenitipanUserResponse> findAllByUserId(Integer userId);
+    //List<PenitipanUserResponse> findAllByUserId(Integer userId);
 
     Penitipan findById(Integer id);
     Penitipan create(Integer userId, PenitipanRequest request);
     Penitipan update(Integer userId, Integer id, PenitipanRequest request);
-    Penitipan verify(Integer userId, Integer id);
-    Penitipan ambilHewan(Integer userId, Integer id);
+    Penitipan verify(Integer userId, Integer id, PenitipanRequest request);
     void delete(Integer id);
 }
