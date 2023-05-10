@@ -26,7 +26,7 @@ public class PenitipanAdminResponse {
 
     public static PenitipanAdminResponse fromPenitipan(Penitipan penitipan){
         return PenitipanAdminResponse.builder()
-                //.userId(penitipan.getUser().getId()) // TODO : Buat hubungan ke class user di auth
+                .userToken(penitipan.getUserToken())
                 .penitipanId(penitipan.getId())
                 .hewan(penitipan.getHewan())
                 .tanggalPenitipan(penitipan.getTanggalPenitipan())
