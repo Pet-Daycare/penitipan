@@ -16,6 +16,7 @@ public interface PenitipanService {
     Penitipan findById(Integer id);
     Penitipan create(Integer userId, PenitipanRequest request);
     Penitipan update(Integer userId, Integer id, PenitipanRequest request);
-    Penitipan verify(Integer userId, Integer id, PenitipanRequest request);
+    Penitipan verify(Integer userId, Integer id);
+    Penitipan ambilHewan(Integer userId, Integer id);
     void delete(Integer id);
 }

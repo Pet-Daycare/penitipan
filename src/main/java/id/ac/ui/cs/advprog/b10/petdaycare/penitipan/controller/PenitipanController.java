@@ -54,9 +54,15 @@ public class PenitipanController {
         return ResponseEntity.ok(String.format("Deleted Order with id %d", id));
     }
 
-    @PutMapping("/verify/{id}")
-    public ResponseEntity<Penitipan> updateOrder(@PathVariable Integer id, @RequestBody PenitipanRequest penitipanRequest) {
-        Penitipan response = penitipanService.verify(getCurrentUser().getId(), id, penitipanRequest);
+    @PatchMapping("/verify/{id}")
+    public ResponseEntity<Penitipan> verifyPenitipan(@PathVariable Integer id) {
+        Penitipan response = penitipanService.verify(getCurrentUser().getId(), id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/ambil/{id}")
+    public ResponseEntity<Penitipan> pengambilanHewan(@PathVariable Intger id){
+        Penitipan response = penitipanService.ambilHewan(getCurrentUser().getId(), id);
         return ResponseEntity.ok(response);
     }
 
