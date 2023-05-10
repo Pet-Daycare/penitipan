@@ -1,13 +1,15 @@
 package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.hewan;
 
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.HewanRequest;
-import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.HewanDoesnotException;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.HewanDoesNotExistException;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.PenitipanDoesNotExistException;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.hewan.Hewan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.HewanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +22,11 @@ public class HewanServiceImpl implements HewanService {
 
     @Override
     public Hewan findById(Integer id) {
-        if (isHewanDoesNotExist(id)){
-            throw new HewanDoesnotException(id);
+        Optional<Hewan> hewan = hewanRepository.findById(id);
+        if (hewan.isPresent()){
+            return hewan.get();
         }
-        return hewanRepository.findById(id).get();
+        throw new PenitipanDoesNotExistException(id);
     }
 
     @Override
@@ -33,26 +36,28 @@ public class HewanServiceImpl implements HewanService {
                 .tipeHewan(request.getTipeHewan())
                 .beratHewan(request.getBeratHewan())
                 .build();
-        return hewanRepository.save(hewan);
+        hewanRepository.save(hewan);
+        return hewan;
     }
 
     @Override
     public Hewan update(Integer id, HewanRequest request) {
         if (isHewanDoesNotExist(id)) {
-            throw new HewanDoesnotException(id);
+            throw new HewanDoesNotExistException(id);
         }
         Hewan hewan = Hewan.builder()
                 .nama(request.getNama())
                 .tipeHewan(request.getTipeHewan())
                 .beratHewan(request.getBeratHewan())
                 .build();
-        return this.hewanRepository.save(hewan);
+        hewanRepository.save(hewan);
+        return hewan;
     }
 
     @Override
     public void delete(Integer id) {
         if (isHewanDoesNotExist(id)){
-            throw new HewanDoesnotException(id);
+            throw new HewanDoesNotExistException(id);
         }
         else{
             hewanRepository.deleteById(id);

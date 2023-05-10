@@ -17,6 +17,7 @@ public class Hewan {
     @Id
     @GeneratedValue
     private Integer id;
+
     private String nama;
     private String tipeHewan;
     private String beratHewan;
