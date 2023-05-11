@@ -26,7 +26,7 @@ public class HewanServiceImpl implements HewanService {
         if (hewan.isPresent()){
             return hewan.get();
         }
-        throw new PenitipanDoesNotExistException(id);
+        throw new HewanDoesNotExistException(id);
     }
 
     @Override
@@ -46,6 +46,7 @@ public class HewanServiceImpl implements HewanService {
             throw new HewanDoesNotExistException(id);
         }
         Hewan hewan = Hewan.builder()
+                .id(id)
                 .nama(request.getNama())
                 .tipeHewan(request.getTipeHewan())
                 .beratHewan(request.getBeratHewan())

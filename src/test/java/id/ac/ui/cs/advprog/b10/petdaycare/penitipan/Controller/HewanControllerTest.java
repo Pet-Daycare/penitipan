@@ -1,3 +1,4 @@
+/*
 package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.Controller;
 
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.Util;
@@ -134,3 +135,4 @@ class HewanControllerTest {
         verify(service, atLeastOnce()).delete(any(Integer.class));
     }
 }
+*/

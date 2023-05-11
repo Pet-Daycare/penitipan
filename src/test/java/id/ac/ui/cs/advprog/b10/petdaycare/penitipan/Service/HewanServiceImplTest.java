@@ -56,7 +56,7 @@ public class HewanServiceImplTest {
                 .tipeHewan("Kucing")
                 .build();
 
-        hewan = Hewan.builder()
+        newHewan = Hewan.builder()
                 .id(0)
                 .nama("Bob")
                 .beratHewan("30Kg")
