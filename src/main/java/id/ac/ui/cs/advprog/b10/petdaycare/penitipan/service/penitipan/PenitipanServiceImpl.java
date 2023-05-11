@@ -43,12 +43,11 @@ public class PenitipanServiceImpl implements PenitipanService{
 
     @Override
     public Penitipan findById(Integer id) {
-        if (isPenitipanDoesNotExist(id)){
+        Optional<Penitipan> optionalPenitipan = penitipanRepository.findById(id);
+        if (optionalPenitipan.isEmpty()) {
             throw new PenitipanDoesNotExistException(id);
         }
-        else {
-            return penitipanRepository.findById(id).get();
-        }
+        return optionalPenitipan.get();
     }
 
     @Override
@@ -103,7 +102,7 @@ public class PenitipanServiceImpl implements PenitipanService{
     @Override
     public Penitipan verify(Integer userId, Integer id){
         Optional<Penitipan> optionalPenitipan = penitipanRepository.findById(id);
-        if (!optionalPenitipan.isPresent()) {
+        if (optionalPenitipan.isEmpty()) {
             throw new PenitipanDoesNotExistException(id);
         }
         Penitipan penitipan = optionalPenitipan.get();
@@ -116,7 +115,7 @@ public class PenitipanServiceImpl implements PenitipanService{
     @Override
     public Penitipan ambilHewan(Integer userId, Integer id){
         Optional<Penitipan> optionalPenitipan = penitipanRepository.findById(id);
-        if (!optionalPenitipan.isPresent()) {
+        if (optionalPenitipan.isEmpty()) {
             throw new PenitipanDoesNotExistException(id);
         }
         Penitipan penitipan = optionalPenitipan.get();
