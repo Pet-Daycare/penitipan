@@ -4,8 +4,6 @@ import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.HewanRequest;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanAdminResponse;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanRequest;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanUserResponse;
-import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanRequest;
-import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanUserResponse;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.hewan.Hewan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Penitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.hewan.HewanService;
@@ -40,13 +38,13 @@ public class PenitipanController {
 
     @PostMapping("/create")
     public ResponseEntity<Penitipan> createPenitipan(@RequestBody PenitipanRequest penitipanRequest) {
-        Penitipan response = penitipanService.create(getCurrentUser().getId(), penitipanRequest); // TODO : ganti dengan get current user id
+        Penitipan response = penitipanService.create(1, penitipanRequest); // TODO : ganti dengan get current user id
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Penitipan> updateOrder(@PathVariable Integer id, @RequestBody PenitipanRequest penitipanRequest) {
-        Penitipan response = penitipanService.update(getCurrentUser().getId(), id, penitipanRequest);
+        Penitipan response = penitipanService.update(1, id, penitipanRequest);// TODO : ganti dengan get current user id
         return ResponseEntity.ok(response);
     }
 
@@ -56,9 +54,15 @@ public class PenitipanController {
         return ResponseEntity.ok(String.format("Deleted Order with id %d", id));
     }
 
-    @PutMapping("/verify/{id}")
-    public ResponseEntity<Penitipan> updateOrder(@PathVariable Integer id, @RequestBody PenitipanRequest penitipanRequest) {
-        Penitipan response = penitipanService.verify(getCurrentUser().getId(), id, penitipanRequest);
+    @PatchMapping("/verify/{id}")
+    public ResponseEntity<Penitipan> verifyPenitipan(@PathVariable Integer id) {
+        Penitipan response = penitipanService.verify(1, id); // TODO : ganti dengan get current user id
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/ambil/{id}")
+    public ResponseEntity<Penitipan> pengambilanHewan(@PathVariable Integer id){
+        Penitipan response = penitipanService.ambilHewan(1, id); // TODO : ganti dengan get current user id
         return ResponseEntity.ok(response);
     }
 
