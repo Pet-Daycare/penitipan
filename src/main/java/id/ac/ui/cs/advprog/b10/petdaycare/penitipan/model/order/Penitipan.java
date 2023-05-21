@@ -24,6 +24,7 @@ public class Penitipan {
 //    @ManyToOne
 //    @JoinColumn(name = "_user_id", nullable = false)
     private String userToken;
+    private Integer userId;
 
     // TODO : Pastikan asumsi satu penitipan hanya menitipkan satu hewan benar
     @OneToOne

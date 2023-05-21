@@ -100,6 +100,48 @@ public class PenitipanServiceImpl implements PenitipanService{
     }
 
     @Override
+    public Penitipan cancel(Integer userId, Integer penitipanId) {
+        // TODO: Cancel penitipan
+        return null;
+    }
+
+    @Override
+    public List<PenitipanUserResponse> findAllByUserId(Integer userId) {
+        // TODO: Find all penitipan by user id
+        return null;
+    }
+
+    @Override
+    public List<PenitipanAdminResponse> findAllByHewanId(Integer hewanId) {
+        // TODO: Find all penitipan by hewan id
+        return null;
+    }
+
+    @Override
+    public List<Penitipan> findAllByStatus(StatusPenitipan statusPenitipan) {
+        // TODO: Find all penitipan by status
+        return null;
+    }
+
+    @Override
+    public List<PenitipanUserResponse> findAllByUserIdAndStatus(Integer userId, StatusPenitipan statusPenitipan) {
+        // TODO: Find all penitipan by user id and status
+        return null;
+    }
+
+    @Override
+    public List<PenitipanAdminResponse> findAllByHewanIdAndStatus(Integer hewanId, StatusPenitipan statusPenitipan) {
+        // TODO: Find all penitipan by hewan id and status
+        return null;
+    }
+
+    @Override
+    public Penitipan complete(Integer userId, Integer penitipanId) {
+        // TODO: Complete penitipan
+        return null;
+    }
+
+    @Override
     public Penitipan verify(Integer userId, Integer id){
         Optional<Penitipan> optionalPenitipan = penitipanRepository.findById(id);
         if (optionalPenitipan.isEmpty()) {
