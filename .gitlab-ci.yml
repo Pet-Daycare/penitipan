@@ -21,9 +21,7 @@ sonarcloud-check:
     paths:
       - .sonar/cache
   script:
-    - gradle sonarqube \
-      -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \
-      -Dsonar.coverage.jacoco.reportPaths=build/reports/jacoco/test/jacocoTestReport.xml
+    - gradle sonarqube
   only:
     - merge_requests
     - master

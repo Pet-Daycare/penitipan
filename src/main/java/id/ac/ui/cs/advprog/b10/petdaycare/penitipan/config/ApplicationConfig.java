@@ -13,6 +13,8 @@ import java.util.Properties;
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
+    static final String password = "ibyqedrbaximjxgg";
+
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -20,7 +22,7 @@ public class ApplicationConfig {
         mailSender.setPort(587);
 
         mailSender.setUsername("petdaycare.b10@gmail.com");
-        mailSender.setPassword("ibyqedrbaximjxgg");
+        mailSender.setPassword(password);
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
