@@ -22,10 +22,6 @@ sonarcloud-check:
       - .sonar/cache
   script:
     - gradle sonarqube \
-      -Dsonar.projectKey=penitipan \
-      -Dsonar.organization=petdaycaree \
-      -Dsonar.host.url=https://sonarcloud.io \
-      -Dsonar.login=0002085bab8def915027dc25568d5c5800929d29 \
       -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \
       -Dsonar.coverage.jacoco.reportPaths=build/reports/jacoco/test/jacocoTestReport.xml
   only:
