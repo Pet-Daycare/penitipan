@@ -1,3 +1,100 @@
+package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.Controller;
+
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.controller.HewanController;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.HewanRequest;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.hewan.Hewan;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.hewan.HewanService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+class HewanControllerTest {
+    private HewanController hewanController;
+
+    @Mock
+    private HewanService hewanService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+        hewanController = new HewanController(hewanService);
+    }
+
+    @Test
+    void testGetAllHewan() {
+        List<Hewan> expectedResponse = new ArrayList<>();
+        when(hewanService.findAll()).thenReturn(expectedResponse);
+
+        ResponseEntity<List<Hewan>> responseEntity = hewanController.getAllHewan();
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(expectedResponse, responseEntity.getBody());
+        verify(hewanService, times(1)).findAll();
+    }
+
+    @Test
+    void testGetHewanById() {
+        int id = 1;
+        Hewan expectedResponse = new Hewan();
+        when(hewanService.findById(id)).thenReturn(expectedResponse);
+
+        ResponseEntity<Hewan> responseEntity = hewanController.getHewanById(id);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(expectedResponse, responseEntity.getBody());
+        verify(hewanService, times(1)).findById(id);
+    }
+
+    @Test
+    void testAddHewan() {
+        HewanRequest request = new HewanRequest();
+        Hewan expectedResponse = new Hewan();
+        when(hewanService.create(request)).thenReturn(expectedResponse);
+
+        ResponseEntity<Hewan> responseEntity = hewanController.addHewan(request);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(expectedResponse, responseEntity.getBody());
+        verify(hewanService, times(1)).create(request);
+    }
+
+    @Test
+    void testPutHewan() {
+        int id = 1;
+        HewanRequest request = new HewanRequest();
+        Hewan expectedResponse = new Hewan();
+        when(hewanService.update(id, request)).thenReturn(expectedResponse);
+
+        ResponseEntity<Hewan> responseEntity = hewanController.putHewan(id, request);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(expectedResponse, responseEntity.getBody());
+        verify(hewanService, times(1)).update(id, request);
+    }
+
+    @Test
+    void testDeleteHewan() {
+        int id = 1;
+
+        ResponseEntity<String> responseEntity = hewanController.deleteHewan(id);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals("Deleted Hewan with id 1", responseEntity.getBody());
+        verify(hewanService, times(1)).delete(id);
+    }
+}
+
+
 /*
 package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.Controller;
 
