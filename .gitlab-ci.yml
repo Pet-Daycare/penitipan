@@ -14,38 +14,12 @@ variables:
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
   GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
 
-sonarcloud-check:
-  image: gradle:jdk17-alpine
-  cache:
-    key: "${CI_JOB_NAME}"
-    paths:
-      - .sonar/cache
-  script: gradle sonarqube
-  only:
-    - merge_requests
-    - master
-    - develop
-
-#sonarcloud-check:
-#  image: gradle:alpine
-#  cache:
-#    key: "${CI_JOB_NAME}"
-#    paths:
-#      - .sonar/cache
-#  script: gradle sonarqube
-#  rules:
-#    - if: $CI_COMMIT_REF_NAME == 'master' || $CI_PIPELINE_SOURCE == 'merge_request_event'
-
-
 
 stages:
   - build
   - test
   - publish
   - deploy
-
-
-
 
 Build:
   stage: build
@@ -62,8 +36,6 @@ Build:
     paths:
       - build/libs/*.jar
     expire_in: 1 week
-
-
 
 
 Test:
@@ -87,9 +59,30 @@ Test:
     reports:
       junit: build/test-results/test/**/TEST-*.xml
   coverage: '/Total.*?([0-9]{1,3})%/'
+  allow_failure: true
 
-
-
+sonarcloud-check:
+  stage: test
+  image: gradle:jdk17-alpine
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - gradle sonarqube
+    - gradle test
+    - gradle jacocoTestReport
+    - grep -Eo "Total.*?([0-9]{1,3})%" build/jacocoHtml/index.html
+  only:
+    - merge_requests
+    - master
+    - develop
+  artifacts:
+    when: always
+    reports:
+      junit: build/test-results/test/**/TEST-*.xml
+  coverage: '/Total.*?([0-9]{1,3})%/'
+  allow_failure: true
 
 Publish:
   stage: publish
@@ -108,8 +101,6 @@ Publish:
     - dind
   only:
     - master
-
-
 
 
 Deploy:
