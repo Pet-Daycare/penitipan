@@ -1,29 +1,60 @@
 package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.penitipan;
 
 
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.auth.AuthTransactionDto;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanAdminResponse;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanRequest;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanUserResponse;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.HewanDoesNotExistException;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.PenitipanDoesNotExistException;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.auth.CustomerRequest;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Penitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.StatusPenitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.HewanRepository;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.PenitipanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 @Service
 @RequiredArgsConstructor
 public class PenitipanServiceImpl implements PenitipanService{
     private final PenitipanRepository penitipanRepository;
     private final HewanRepository hewanRepository;
+    private final RestTemplate restTemplate;
 
-    // TODO: Lengkapi implementasi penitipan
+    private AuthTransactionDto verifyToken(String token) throws InterruptedException{
+        String otherInstanceURL = "http://localhost:8080/api/v1/auth/verify-token/"+token; // TODO : Change to main url
+        return restTemplate.getForObject((otherInstanceURL), AuthTransactionDto.class);
+    }
+
+    private Supplier<AuthTransactionDto> getAuthTransactionDtoSupplier(String token) {
+        return () -> {
+            try {
+                return verifyToken(token);
+            } catch (InterruptedException e) {
+                throw new RuntimeException();
+            }
+        };
+    }
+
+    public AuthTransactionDto getAuthTransactionDto(CustomerRequest request){
+        CompletableFuture<AuthTransactionDto> futureDto = CompletableFuture.supplyAsync(
+                getAuthTransactionDtoSupplier(request.getToken())
+        );
+
+        AuthTransactionDto dto = futureDto.join();
+        System.out.println(dto.getIdCustomer());
+
+        System.out.println(dto.getUsername());
+        return dto;
+    }
 
     @Override
     public List<PenitipanAdminResponse> findAll() {
@@ -33,13 +64,13 @@ public class PenitipanServiceImpl implements PenitipanService{
                 .toList();
     }
 
-    //@Override
-    //public List<PenitipanUserResponse> findAllByUserId(Integer userId) {
-    //    return penitipanRepository.findAllByUserId(userId)
-    //            .stream()
-    //            .map(PenitipanUserResponse::fromPenitipan)
-    //            .toList();
-    //}
+    @Override
+    public List<PenitipanUserResponse> findAllByUserId(Integer userId) {
+        return penitipanRepository.findAllByUserId(userId)
+                .stream()
+                .map(PenitipanUserResponse::fromPenitipan)
+                .toList();
+    }
 
     @Override
     public Penitipan findById(Integer id) {
@@ -57,7 +88,7 @@ public class PenitipanServiceImpl implements PenitipanService{
             throw new HewanDoesNotExistException(idHewan);
         }
         var penitipan = Penitipan.builder()
-                //.user()// Todo Hubungkan dengan authentication microservice
+                .userId(userId)
                 .hewan(penitipanRequest.getHewan())
                 .tanggalPenitipan(penitipanRequest.getTanggalPenitipan())
                 .tanggalPengambilan(penitipanRequest.getTanggalPengambilan())
@@ -79,7 +110,7 @@ public class PenitipanServiceImpl implements PenitipanService{
         }
         var penitipan = Penitipan.builder()
                 .id(id)
-               // .user()// Todo Hubungkan dengan authentication microservice
+                .userId(userId)
                 .hewan(penitipanRequest.getHewan())
                 .tanggalPenitipan(penitipanRequest.getTanggalPenitipan())
                 .tanggalPengambilan(penitipanRequest.getTanggalPengambilan())

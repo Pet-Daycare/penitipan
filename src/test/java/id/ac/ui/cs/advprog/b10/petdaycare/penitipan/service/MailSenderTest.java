@@ -1,4 +1,4 @@
-package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service;
+package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.Service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

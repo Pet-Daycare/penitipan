@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public interface PenitipanService {
     List<PenitipanAdminResponse> findAll();
-    //List<PenitipanUserResponse> findAllByUserId(Integer userId);
+    List<PenitipanUserResponse> findAllByUserId(Integer userId);
 
     Penitipan findById(Integer id);
     Penitipan create(Integer userId, PenitipanRequest request);
