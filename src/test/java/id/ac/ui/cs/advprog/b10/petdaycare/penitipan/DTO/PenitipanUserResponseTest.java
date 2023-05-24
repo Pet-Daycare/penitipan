@@ -6,6 +6,7 @@ import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Penitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.StatusPenitipan;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,9 +20,9 @@ class PenitipanUserResponseTest {
                 .hewan(new Hewan())
                 .statusPenitipan(StatusPenitipan.UNVERIFIED_PENITIPAN)
                 .pesanPenitipan("Test message")
-                .tanggalPenitipan(new Date())
-                .tanggalPengambilan(new Date())
-                .tanggalDiambil(new Date())
+                .tanggalPenitipan(LocalDateTime.now())
+                .tanggalPengambilan(LocalDateTime.now())
+                .tanggalDiambil(LocalDateTime.now())
                 .build();
 
         PenitipanUserResponse response = PenitipanUserResponse.fromPenitipan(penitipan);

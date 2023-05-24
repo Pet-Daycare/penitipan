@@ -8,6 +8,7 @@ import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Penitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.StatusPenitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.HewanRepository;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.PenitipanRepository;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.payment.PaymentService;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.penitipan.PenitipanService;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.penitipan.PenitipanServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,10 +38,13 @@ class PenitipanServiceImplTest {
     @Mock
     private RestTemplate restTemplate;
 
+    @Mock
+    private PaymentService paymentService;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        penitipanService = new PenitipanServiceImpl(penitipanRepository, hewanRepository,restTemplate);
+        penitipanService = new PenitipanServiceImpl(penitipanRepository, hewanRepository,restTemplate,paymentService);
     }
 
     @Test
@@ -82,9 +87,9 @@ class PenitipanServiceImplTest {
         Hewan hewan = new Hewan(); // Create a new Hewan object
         hewan.setId(hewanId); // Set the id attribute
         request.setUserId(userId);
-        request.setHewan(hewan);
-        request.setTanggalPenitipan(new Date());
-        request.setTanggalPengambilan(new Date());
+        request.setHewanId(hewanId);
+        request.setTanggalPenitipan(LocalDateTime.now());
+        request.setTanggalPengambilan(LocalDateTime.now());
         request.setPesanPenitipan("Test");
 
         when(hewanRepository.findById(hewanId)).thenReturn(Optional.of(hewan)); // Return the same Hewan object from the repository
@@ -124,9 +129,9 @@ class PenitipanServiceImplTest {
         PenitipanRequest request = new PenitipanRequest();
         Hewan hewan = new Hewan(); // Create a new Hewan object
         hewan.setId(hewanId); // Set the id attribute
-        request.setHewan(hewan);
-        request.setTanggalPenitipan(new Date());
-        request.setTanggalPengambilan(new Date());
+        request.setHewanId(hewanId);
+        request.setTanggalPenitipan(LocalDateTime.now());
+        request.setTanggalPengambilan(LocalDateTime.now());
         request.setPesanPenitipan("Test");
 
         when(penitipanRepository.findById(penitipanId)).thenReturn(Optional.of(new Penitipan()));
@@ -149,9 +154,9 @@ class PenitipanServiceImplTest {
         Integer penitipanId = 1;
         Integer hewanId = 1;
         PenitipanRequest request = new PenitipanRequest();
-        request.setHewan(new Hewan());
-        request.setTanggalPenitipan(new Date());
-        request.setTanggalPengambilan(new Date());
+        request.setHewanId(hewanId);
+        request.setTanggalPenitipan(LocalDateTime.now());
+        request.setTanggalPengambilan(LocalDateTime.now());
         request.setPesanPenitipan("Test");
 
         when(penitipanRepository.findById(penitipanId)).thenReturn(Optional.empty());

@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -20,9 +21,11 @@ public class PenitipanAdminResponse {
     private Hewan hewan;
     private StatusPenitipan statusPenitipan;
     private String pesanPenitipan;
-    private Date tanggalPenitipan;
-    private Date tanggalPengambilan;
-    private Date tanggalDiambil;
+    private LocalDateTime tanggalPenitipan;
+    private LocalDateTime tanggalPengambilan;
+    private LocalDateTime tanggalDiambil;
+    private Double initialCost;
+    private Double completionCost;
 
     public static PenitipanAdminResponse fromPenitipan(Penitipan penitipan){
         return PenitipanAdminResponse.builder()
