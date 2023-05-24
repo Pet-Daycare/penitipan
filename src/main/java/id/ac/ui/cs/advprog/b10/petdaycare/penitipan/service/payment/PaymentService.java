@@ -5,6 +5,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface PaymentService {
-    Double calculateInitialPrice(PenitipanRequest penitipanRequest);
-    Double calculateAmbilPrice(PenitipanRequest penitipanRequest);
+    Double calculatePrice(PenitipanRequest penitipanRequest);
 }

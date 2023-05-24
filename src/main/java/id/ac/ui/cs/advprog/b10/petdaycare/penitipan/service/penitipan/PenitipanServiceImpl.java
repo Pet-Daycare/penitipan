@@ -92,10 +92,9 @@ public class PenitipanServiceImpl implements PenitipanService{
                 .tanggalPengambilan(penitipanRequest.getTanggalPengambilan())
                 .statusPenitipan(StatusPenitipan.UNVERIFIED_PENITIPAN)
                 .pesanPenitipan(penitipanRequest.getPesanPenitipan())
-                .initialCost(paymentService.calculateInitialPrice(penitipanRequest))
+                .initialCost(paymentService.calculatePrice(penitipanRequest))
                 .build();
         penitipanRepository.save(penitipan);
-        // TODO : Panggil payment
         return penitipan;
     }
 
@@ -208,6 +207,14 @@ public class PenitipanServiceImpl implements PenitipanService{
             penitipan.setStatusPenitipan(StatusPenitipan.PENGAMBILAN_AWAL);
         }
         penitipan.setTanggalDiambil(currentDate);
+        penitipanRepository.save(penitipan);
+        return penitipan;
+    }
+
+    @Override
+    public Penitipan payComplete(PenitipanRequest penitipanRequest) {
+        Penitipan penitipan = getPenitipan(penitipanRequest.getPenitipanId());
+        penitipan.setCompletionCost(paymentService.calculatePrice(penitipanRequest));
         penitipanRepository.save(penitipan);
         return penitipan;
     }

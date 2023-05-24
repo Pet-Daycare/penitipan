@@ -13,24 +13,17 @@ import java.util.List;
 public interface PenitipanService {
     List<PenitipanAdminResponse> findAll();
     List<PenitipanUserResponse> findAllByUserId(PenitipanRequest penitipanRequest);
-
     Penitipan findById(Integer id);
     Penitipan create(PenitipanRequest penitipanRequest);
     Penitipan update(Integer id, PenitipanRequest request);
     Penitipan verifyPayment(Integer id);
     Penitipan ambilHewan(Integer id);
     void delete(Integer id);
-
     Penitipan cancel(PenitipanRequest penitipanRequest);
-
-
     Penitipan findByHewanId(Integer hewanId);
-
     List<PenitipanAdminResponse> findAllByStatus(StatusPenitipan statusPenitipan);
-
     List<PenitipanUserResponse> findAllByUserIdAndStatus(Integer userId, StatusPenitipan statusPenitipan);
-
     List<PenitipanAdminResponse> findAllByHewanIdAndStatus(Integer hewanId, StatusPenitipan statusPenitipan);
-
     Penitipan complete(Integer userId, Integer penitipanId);
+    Penitipan payComplete(PenitipanRequest penitipanRequest);
 }
