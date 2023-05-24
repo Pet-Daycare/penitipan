@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class HewanServiceImplTest {
+class HewanServiceImplTest {
 
     @InjectMocks
     private HewanServiceImpl service;
@@ -87,9 +87,7 @@ public class HewanServiceImplTest {
     void whenFindByIdAndNotFoundShouldThrowException() {
         when(repository.findById(any(Integer.class))).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(HewanDoesNotExistException.class, () -> {
-            service.findById(0);
-        });
+        Assertions.assertThrows(HewanDoesNotExistException.class, () -> service.findById(0));
     }
 
     @Test
@@ -119,9 +117,7 @@ public class HewanServiceImplTest {
     @Test
     void whenUpdateHewanAndNotFoundShouldThrowException() {
         when(repository.findById(any(Integer.class))).thenReturn(Optional.empty());
-        Assertions.assertThrows(HewanDoesNotExistException.class, () -> {
-            service.update(0, createRequest);
-        });
+        Assertions.assertThrows(HewanDoesNotExistException.class, () -> service.update(0, createRequest));
     }
 
     @Test
@@ -135,8 +131,6 @@ public class HewanServiceImplTest {
     @Test
     void whenDeleteHewanAndNotFoundShouldThrowException() {
         when(repository.findById(any(Integer.class))).thenReturn(Optional.empty());
-        Assertions.assertThrows(HewanDoesNotExistException.class, () -> {
-            service.delete(0);
-        });
+        Assertions.assertThrows(HewanDoesNotExistException.class, () -> service.delete(0));
     }
 }

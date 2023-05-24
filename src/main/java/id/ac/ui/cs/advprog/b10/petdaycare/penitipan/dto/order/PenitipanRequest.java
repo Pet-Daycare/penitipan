@@ -14,8 +14,14 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PenitipanRequest {
-    private Hewan hewan;
+    private Integer penitipanId;
+    private Integer hewanId;
+    private String namaHewan;
+    private String tipeHewan;
+    private String beratHewan;
     private String pesanPenitipan;
     private Date tanggalPenitipan;
     private Date tanggalPengambilan;
+    private Integer userId;
+    private String userToken;
 }

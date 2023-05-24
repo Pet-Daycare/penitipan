@@ -7,7 +7,7 @@ import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanRequest;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanUserResponse;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.HewanDoesNotExistException;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.PenitipanDoesNotExistException;
-import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.auth.CustomerRequest;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.hewan.Hewan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Penitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.StatusPenitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.HewanRepository;
@@ -30,7 +30,7 @@ public class PenitipanServiceImpl implements PenitipanService{
     private final RestTemplate restTemplate;
 
     private AuthTransactionDto verifyToken(String token) throws InterruptedException{
-        String otherInstanceURL = "http://localhost:8080/api/v1/auth/verify-token/"+token; // TODO : Change to main url
+        String otherInstanceURL = "http://localhost:8082/api/v1/auth/verify-token/"+token; // TODO : Change to main url
         return restTemplate.getForObject((otherInstanceURL), AuthTransactionDto.class);
     }
 
@@ -44,9 +44,9 @@ public class PenitipanServiceImpl implements PenitipanService{
         };
     }
 
-    public AuthTransactionDto getAuthTransactionDto(CustomerRequest request){
+    public AuthTransactionDto getAuthTransactionDto(PenitipanRequest request){
         CompletableFuture<AuthTransactionDto> futureDto = CompletableFuture.supplyAsync(
-                getAuthTransactionDtoSupplier(request.getToken())
+                getAuthTransactionDtoSupplier(request.getUserToken())
         );
 
         AuthTransactionDto dto = futureDto.join();
@@ -65,8 +65,8 @@ public class PenitipanServiceImpl implements PenitipanService{
     }
 
     @Override
-    public List<PenitipanUserResponse> findAllByUserId(Integer userId) {
-        return penitipanRepository.findAllByUserId(userId)
+    public List<PenitipanUserResponse> findAllByUserId(PenitipanRequest request) {
+        return penitipanRepository.findAllByUserId(getAuthTransactionDto(request).getIdCustomer())
                 .stream()
                 .map(PenitipanUserResponse::fromPenitipan)
                 .toList();
@@ -82,14 +82,18 @@ public class PenitipanServiceImpl implements PenitipanService{
     }
 
     @Override
-    public Penitipan create(Integer userId, PenitipanRequest penitipanRequest) {
-        Integer idHewan = penitipanRequest.getHewan().getId();
-        if (isHewanDoesNotExist(idHewan)){
-            throw new HewanDoesNotExistException(idHewan);
-        }
+    public Penitipan create(PenitipanRequest penitipanRequest) {
+        var hewan = Hewan.builder()
+                .nama(penitipanRequest.getNamaHewan())
+                .beratHewan(penitipanRequest.getBeratHewan())
+                .tipeHewan(penitipanRequest.getTipeHewan())
+                .build();
+        hewanRepository.save(hewan);
+        Integer idHewan = hewan.getId();
+        Integer userId = getAuthTransactionDto(penitipanRequest).getIdCustomer();
         var penitipan = Penitipan.builder()
                 .userId(userId)
-                .hewan(penitipanRequest.getHewan())
+                .hewan(hewan)
                 .tanggalPenitipan(penitipanRequest.getTanggalPenitipan())
                 .tanggalPengambilan(penitipanRequest.getTanggalPengambilan())
                 .statusPenitipan(StatusPenitipan.UNVERIFIED_PENITIPAN)
@@ -100,18 +104,19 @@ public class PenitipanServiceImpl implements PenitipanService{
     }
 
     @Override
-    public Penitipan update(Integer userId, Integer id, PenitipanRequest penitipanRequest) {
-        if (isPenitipanDoesNotExist(id)) {
-            throw new PenitipanDoesNotExistException(id);
-        }
-        Integer idHewan = penitipanRequest.getHewan().getId();
-        if (isHewanDoesNotExist(idHewan)){
-            throw new HewanDoesNotExistException(idHewan);
-        }
+    public Penitipan update(Integer id, PenitipanRequest penitipanRequest) {
+        var hewan = Hewan.builder()
+                .nama(penitipanRequest.getNamaHewan())
+                .beratHewan(penitipanRequest.getBeratHewan())
+                .tipeHewan(penitipanRequest.getTipeHewan())
+                .build();
+        hewanRepository.save(hewan);
+        Integer idHewan = hewan.getId();
+        Integer userId = getAuthTransactionDto(penitipanRequest).getIdCustomer();
         var penitipan = Penitipan.builder()
                 .id(id)
                 .userId(userId)
-                .hewan(penitipanRequest.getHewan())
+                .hewan(hewan)
                 .tanggalPenitipan(penitipanRequest.getTanggalPenitipan())
                 .tanggalPengambilan(penitipanRequest.getTanggalPengambilan())
                 .statusPenitipan(StatusPenitipan.UNVERIFIED_PENITIPAN)
@@ -131,7 +136,50 @@ public class PenitipanServiceImpl implements PenitipanService{
     }
 
     @Override
-    public Penitipan verify(Integer userId, Integer id){
+    public Penitipan cancel(PenitipanRequest penitipanRequest) {
+        Optional<Penitipan> optionalPenitipan = penitipanRepository.findById(penitipanRequest.getPenitipanId());
+        if (optionalPenitipan.isEmpty()) {
+            throw new PenitipanDoesNotExistException(penitipanRequest.getPenitipanId());
+        }
+        Penitipan penitipan = optionalPenitipan.get();
+        penitipan.setStatusPenitipan(StatusPenitipan.CANCELED_PENITIPAN);
+        penitipanRepository.save(penitipan);
+
+        return penitipan;
+    }
+
+    @Override
+    public List<PenitipanAdminResponse> findAllByHewanId(Integer hewanId) {
+        // TODO: Find all penitipan by hewan id
+        return null;
+    }
+
+    @Override
+    public List<Penitipan> findAllByStatus(StatusPenitipan statusPenitipan) {
+        // TODO: Find all penitipan by status
+        return null;
+    }
+
+    @Override
+    public List<PenitipanUserResponse> findAllByUserIdAndStatus(Integer userId, StatusPenitipan statusPenitipan) {
+        // TODO: Find all penitipan by user id and status
+        return null;
+    }
+
+    @Override
+    public List<PenitipanAdminResponse> findAllByHewanIdAndStatus(Integer hewanId, StatusPenitipan statusPenitipan) {
+        // TODO: Find all penitipan by hewan id and status
+        return null;
+    }
+
+    @Override
+    public Penitipan complete(Integer userId, Integer penitipanId) {
+        // TODO: Complete penitipan
+        return null;
+    }
+
+    @Override
+    public Penitipan verify(Integer id){
         Optional<Penitipan> optionalPenitipan = penitipanRepository.findById(id);
         if (optionalPenitipan.isEmpty()) {
             throw new PenitipanDoesNotExistException(id);
@@ -144,7 +192,7 @@ public class PenitipanServiceImpl implements PenitipanService{
     }
 
     @Override
-    public Penitipan ambilHewan(Integer userId, Integer id){
+    public Penitipan ambilHewan(Integer id){
         Optional<Penitipan> optionalPenitipan = penitipanRepository.findById(id);
         if (optionalPenitipan.isEmpty()) {
             throw new PenitipanDoesNotExistException(id);
@@ -170,7 +218,4 @@ public class PenitipanServiceImpl implements PenitipanService{
         return penitipanRepository.findById(id).isEmpty();
     }
 
-    private boolean isHewanDoesNotExist(Integer id){
-        return hewanRepository.findById(id).isEmpty();
-    }
 }
