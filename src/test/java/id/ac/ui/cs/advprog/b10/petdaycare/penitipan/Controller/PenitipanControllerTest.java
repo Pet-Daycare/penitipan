@@ -3,10 +3,7 @@ package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.Controller;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.controller.PenitipanController;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanAdminResponse;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanRequest;
-import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanUserResponse;
-import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.hewan.Hewan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Penitipan;
-import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.hewan.HewanService;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.penitipan.PenitipanService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -87,13 +84,13 @@ class PenitipanControllerTest {
     void testVerifyPenitipan() {
         int id = 1;
         Penitipan expectedResponse = new Penitipan();
-        when(penitipanService.verify(eq(id))).thenReturn(expectedResponse);
+        when(penitipanService.verifyPayment(eq(id))).thenReturn(expectedResponse);
 
         ResponseEntity<Penitipan> responseEntity = penitipanController.verifyPenitipan(id);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(expectedResponse, responseEntity.getBody());
-        verify(penitipanService, times(1)).verify(eq(id));
+        verify(penitipanService, times(1)).verifyPayment(eq(id));
     }
 
     @Test

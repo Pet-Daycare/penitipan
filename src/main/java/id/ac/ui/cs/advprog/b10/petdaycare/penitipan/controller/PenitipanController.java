@@ -51,7 +51,7 @@ public class PenitipanController {
 
     @PatchMapping("/verify/{id}")
     public ResponseEntity<Penitipan> verifyPenitipan(@PathVariable Integer id ) {
-        Penitipan response = penitipanService.verify(id);
+        Penitipan response = penitipanService.verifyPayment(id);
         return ResponseEntity.ok(response);
     }
 

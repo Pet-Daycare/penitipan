@@ -2,7 +2,6 @@ package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.hewan;
 
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.HewanRequest;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.HewanDoesNotExistException;
-import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.PenitipanDoesNotExistException;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.hewan.Hewan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.HewanRepository;
 import lombok.RequiredArgsConstructor;

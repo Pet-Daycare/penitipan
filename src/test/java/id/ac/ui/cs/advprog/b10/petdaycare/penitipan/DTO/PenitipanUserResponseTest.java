@@ -10,10 +10,10 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PenitipanUserResponseTest {
+class PenitipanUserResponseTest {
 
     @Test
-    public void testFromPenitipan() {
+    void testFromPenitipan() {
         Penitipan penitipan = Penitipan.builder()
                 .id(1)
                 .hewan(new Hewan())

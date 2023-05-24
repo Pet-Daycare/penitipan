@@ -17,6 +17,7 @@ public class Hewan {
     private Integer id;
 
     private String nama;
-    private String tipeHewan;
-    private String beratHewan;
+    @Enumerated(EnumType.STRING)
+    private TipeHewan tipeHewan;
+    private Integer beratHewan;
 }
