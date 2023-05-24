@@ -2,8 +2,6 @@ package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.Service;
 
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanAdminResponse;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanRequest;
-import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanUserResponse;
-import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.HewanDoesNotExistException;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.PenitipanDoesNotExistException;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.hewan.Hewan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Penitipan;
@@ -214,7 +212,7 @@ class PenitipanServiceImplTest {
         when(penitipanRepository.findById(penitipanId)).thenReturn(Optional.of(penitipan));
         when(penitipanRepository.save(penitipan)).thenReturn(penitipan);
 
-        Penitipan result = penitipanService.verify(penitipanId);
+        Penitipan result = penitipanService.verifyPayment(penitipanId);
 
         assertNotNull(result);
         assertEquals(StatusPenitipan.VERIFIED_PENITIPAN, result.getStatusPenitipan());
@@ -228,7 +226,7 @@ class PenitipanServiceImplTest {
         Integer penitipanId = 1;
         when(penitipanRepository.findById(penitipanId)).thenReturn(Optional.empty());
 
-        assertThrows(PenitipanDoesNotExistException.class, () -> penitipanService.verify(penitipanId));
+        assertThrows(PenitipanDoesNotExistException.class, () -> penitipanService.verifyPayment(penitipanId));
         verify(penitipanRepository, times(1)).findById(penitipanId);
         verify(penitipanRepository, never()).save(any(Penitipan.class));
     }
