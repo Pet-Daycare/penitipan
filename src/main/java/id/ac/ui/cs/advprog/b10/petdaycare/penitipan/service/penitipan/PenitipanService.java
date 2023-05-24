@@ -19,11 +19,11 @@ public interface PenitipanService {
     Penitipan verifyPayment(Integer id);
     Penitipan ambilHewan(Integer id);
     void delete(Integer id);
-    Penitipan cancel(PenitipanRequest penitipanRequest);
+    Penitipan cancel(Integer penitipanId);
     Penitipan findByHewanId(Integer hewanId);
     List<PenitipanAdminResponse> findAllByStatus(StatusPenitipan statusPenitipan);
     List<PenitipanUserResponse> findAllByUserIdAndStatus(Integer userId, StatusPenitipan statusPenitipan);
     List<PenitipanAdminResponse> findAllByHewanIdAndStatus(Integer hewanId, StatusPenitipan statusPenitipan);
-    Penitipan complete(Integer userId, Integer penitipanId);
-    Penitipan payComplete(PenitipanRequest penitipanRequest);
+    Penitipan complete(Integer penitipanId);
+    Penitipan payComplete(Integer penitipanId);
 }

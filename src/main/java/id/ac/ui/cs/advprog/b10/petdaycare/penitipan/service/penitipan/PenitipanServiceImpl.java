@@ -7,6 +7,7 @@ import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanUserRespo
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.PenitipanDoesNotExistException;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.PenitipanWithHewanIdDoesNotExistException;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.hewan.Hewan;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.hewan.TipeHewan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Penitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.StatusPenitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.HewanRepository;
@@ -37,9 +38,8 @@ public class PenitipanServiceImpl implements PenitipanService{
     }
 
     private Supplier<AuthTransactionDto> getAuthTransactionDtoSupplier(String token) {
-        return () -> {
-            return verifyToken(token);
-        };
+        return () -> verifyToken(token);
+
     }
 
     public AuthTransactionDto getAuthTransactionDto(PenitipanRequest request){
@@ -80,7 +80,7 @@ public class PenitipanServiceImpl implements PenitipanService{
         var hewan = Hewan.builder()
                 .nama(penitipanRequest.getNamaHewan())
                 .beratHewan(penitipanRequest.getBeratHewan())
-                .tipeHewan(penitipanRequest.getTipeHewan())
+                .tipeHewan(TipeHewan.valueOf(penitipanRequest.getTipeHewan()))
                 .build();
         hewanRepository.save(hewan);
         AuthTransactionDto dto = getAuthTransactionDto(penitipanRequest);
@@ -92,8 +92,8 @@ public class PenitipanServiceImpl implements PenitipanService{
                 .tanggalPengambilan(penitipanRequest.getTanggalPengambilan())
                 .statusPenitipan(StatusPenitipan.UNVERIFIED_PENITIPAN)
                 .pesanPenitipan(penitipanRequest.getPesanPenitipan())
-                .initialCost(paymentService.calculatePrice(penitipanRequest))
                 .build();
+        penitipan.setInitialCost(paymentService.calculatePrice(penitipan));
         penitipanRepository.save(penitipan);
         return penitipan;
     }
@@ -103,7 +103,7 @@ public class PenitipanServiceImpl implements PenitipanService{
         var hewan = Hewan.builder()
                 .nama(penitipanRequest.getNamaHewan())
                 .beratHewan(penitipanRequest.getBeratHewan())
-                .tipeHewan(penitipanRequest.getTipeHewan())
+                .tipeHewan(TipeHewan.valueOf(penitipanRequest.getTipeHewan()))
                 .build();
         hewanRepository.save(hewan);
         Integer userId = getAuthTransactionDto(penitipanRequest).getIdCustomer();
@@ -116,6 +116,7 @@ public class PenitipanServiceImpl implements PenitipanService{
                 .statusPenitipan(StatusPenitipan.UNVERIFIED_PENITIPAN)
                 .pesanPenitipan(penitipanRequest.getPesanPenitipan())
                 .build();
+        penitipan.setInitialCost(paymentService.calculatePrice(penitipan));
         penitipanRepository.save(penitipan);
 
         return penitipan;
@@ -130,8 +131,8 @@ public class PenitipanServiceImpl implements PenitipanService{
     }
 
     @Override
-    public Penitipan cancel(PenitipanRequest penitipanRequest) {
-        Penitipan penitipan = getPenitipan(penitipanRequest.getPenitipanId());
+    public Penitipan cancel(Integer penitipanId) {
+        Penitipan penitipan = findById(penitipanId);
         penitipan.setStatusPenitipan(StatusPenitipan.CANCELED_PENITIPAN);
         penitipanRepository.save(penitipan);
 
@@ -168,8 +169,8 @@ public class PenitipanServiceImpl implements PenitipanService{
     }
 
     @Override
-    public Penitipan complete(Integer userId, Integer penitipanId) {
-        Penitipan penitipan = getPenitipan(penitipanId);
+    public Penitipan complete(Integer penitipanId) {
+        Penitipan penitipan = findById(penitipanId);
         penitipan.setStatusPenitipan(StatusPenitipan.COMPLETED_PENITIPAN);
         penitipanRepository.save(penitipan);
         return penitipan;
@@ -177,25 +178,16 @@ public class PenitipanServiceImpl implements PenitipanService{
 
     @Override
     public Penitipan verifyPayment(Integer id){
-        Penitipan penitipan = getPenitipan(id);
+        Penitipan penitipan = findById(id);
         penitipan.setStatusPenitipan(StatusPenitipan.VERIFIED_PENITIPAN);
         penitipanRepository.save(penitipan);
 
         return penitipan;
     }
 
-    private Penitipan getPenitipan(Integer id) {
-        Optional<Penitipan> optionalPenitipan = penitipanRepository.findById(id);
-        if (optionalPenitipan.isEmpty()) {
-            throw new PenitipanDoesNotExistException(id);
-        }
-        Penitipan penitipan = optionalPenitipan.get();
-        return penitipan;
-    }
-
     @Override
     public Penitipan ambilHewan(Integer id){
-        Penitipan penitipan = getPenitipan(id);
+        Penitipan penitipan = findById(id);
 
         LocalDateTime currentDate = LocalDateTime.now();
         LocalDateTime supposedReturnDate = penitipan.getTanggalPengambilan();
@@ -212,9 +204,9 @@ public class PenitipanServiceImpl implements PenitipanService{
     }
 
     @Override
-    public Penitipan payComplete(PenitipanRequest penitipanRequest) {
-        Penitipan penitipan = getPenitipan(penitipanRequest.getPenitipanId());
-        penitipan.setCompletionCost(paymentService.calculatePrice(penitipanRequest));
+    public Penitipan payComplete(Integer penitipanId) {
+        Penitipan penitipan = findById(penitipanId);
+        penitipan.setCompletionCost(paymentService.calculatePrice(penitipan));
         penitipanRepository.save(penitipan);
         return penitipan;
     }

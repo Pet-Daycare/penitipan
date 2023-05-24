@@ -1,8 +1,8 @@
 package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.payment;
 
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.core.cost.*;
-import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanRequest;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.hewan.TipeHewan;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Penitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.StatusPenitipan;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,30 +18,30 @@ public class PaymentServiceImpl implements PaymentService {
 
     // todo : post payment
     @Override
-    public Double calculatePrice(PenitipanRequest penitipanRequest) {
-        TipeHewan tipeHewan = penitipanRequest.getTipeHewan();
-        if (tipeHewan.equals("DOG") ){
+    public Double calculatePrice(Penitipan penitipan) {
+        TipeHewan tipeHewan = penitipan.getHewan().getTipeHewan();
+        if (tipeHewan.equals(TipeHewan.DOG) ){
             penitipanCost = new DogCostCalculator();
-        } else if (tipeHewan.equals("CAT")) {
+        } else if (tipeHewan.equals(TipeHewan.CAT)) {
             penitipanCost = new CatCostCalculator();
-        } else if (tipeHewan.equals("RABBIT")) {
+        } else if (tipeHewan.equals(TipeHewan.RABBIT)) {
             penitipanCost = new RabbitCostCalculator();
-        } else if (tipeHewan.equals("Other")) {
+        } else if (tipeHewan.equals(TipeHewan.OTHER)) {
             penitipanCost = new OtherCostCalculator();
         }
 
-        StatusPenitipan statusPenitipan = penitipanRequest.getStatusPenitipan();
-        LocalDateTime tanggalTitip = penitipanRequest.getTanggalPenitipan();
-        Integer beratHewan = penitipanRequest.getBeratHewan();
+        StatusPenitipan statusPenitipan = penitipan.getStatusPenitipan();
+        LocalDateTime tanggalTitip = penitipan.getTanggalPenitipan();
+        Integer beratHewan = penitipan.getHewan().getBeratHewan();
 
         if (statusPenitipan == StatusPenitipan.UNVERIFIED_PENITIPAN) {
-            LocalDateTime tanggalPengambilan = penitipanRequest.getTanggalPengambilan();
-            Duration lamaTitip = Duration.between(tanggalPengambilan, tanggalTitip);
+            LocalDateTime tanggalPengambilan = penitipan.getTanggalPengambilan();
+            Duration lamaTitip = Duration.between(tanggalTitip,tanggalPengambilan);
             double lamaJamTitip = lamaTitip.toHours();
             return penitipanCost.getInitialCost(lamaJamTitip, beratHewan);
         } else {
-            LocalDateTime tanggalDiambil = penitipanRequest.getTanggalDiambil();
-            Duration lamaTitip = Duration.between(tanggalDiambil, tanggalTitip);
+            LocalDateTime tanggalDiambil = penitipan.getTanggalDiambil();
+            Duration lamaTitip = Duration.between(tanggalTitip,tanggalDiambil);
             double lamaJamTitip = lamaTitip.toHours();
 
             Double totalCost = penitipanCost.getInitialCost(lamaJamTitip, beratHewan);

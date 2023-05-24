@@ -19,14 +19,14 @@ public class PenitipanController {
 
     @GetMapping("/all")
     public ResponseEntity<List<PenitipanAdminResponse>> getAllOrder() {
-        List<PenitipanAdminResponse> response = null;
+        List<PenitipanAdminResponse> response;
         response = penitipanService.findAll();
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/me")
     public ResponseEntity<List<PenitipanUserResponse>> getAllUserOrder(@RequestBody PenitipanRequest penitipanRequest) {
-        List<PenitipanUserResponse> response = null;
+        List<PenitipanUserResponse> response;
         response = penitipanService.findAllByUserId(penitipanRequest);
        return ResponseEntity.ok(response);
     }
@@ -56,8 +56,26 @@ public class PenitipanController {
     }
 
     @PatchMapping("/ambil/{id}")
-        public ResponseEntity<Penitipan> pengambilanHewan(@PathVariable Integer id){
+    public ResponseEntity<Penitipan> pengambilanHewan(@PathVariable Integer id){
         Penitipan response = penitipanService.ambilHewan(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("pay/complete/{id}")
+    public ResponseEntity<Penitipan> payComplete(@PathVariable Integer id){
+        Penitipan response = penitipanService.payComplete(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("cancel/{id}")
+    public ResponseEntity<Penitipan> cancel(@PathVariable Integer id){
+        Penitipan response = penitipanService.cancel(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("complete/{id}")
+    public ResponseEntity<Penitipan> complete(@PathVariable Integer id){
+        Penitipan response = penitipanService.complete(id);
         return ResponseEntity.ok(response);
     }
 
