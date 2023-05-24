@@ -8,13 +8,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-public class MailSenderTest {
+class MailSenderTest {
 
     @Autowired
     private JavaMailSender javaMailSender;
 
     @Test
-    public void testSendEmail() {
+    void testSendEmail() {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo("vcy.maulana@gmail.com");

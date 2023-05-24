@@ -1,29 +1,60 @@
 package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.penitipan;
 
 
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.auth.AuthTransactionDto;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanAdminResponse;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanRequest;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanUserResponse;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.HewanDoesNotExistException;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.PenitipanDoesNotExistException;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.hewan.Hewan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Penitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.StatusPenitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.HewanRepository;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.PenitipanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 @Service
 @RequiredArgsConstructor
 public class PenitipanServiceImpl implements PenitipanService{
     private final PenitipanRepository penitipanRepository;
     private final HewanRepository hewanRepository;
+    private final RestTemplate restTemplate;
 
-    // TODO: Lengkapi implementasi penitipan
+    private AuthTransactionDto verifyToken(String token) throws InterruptedException{
+        String otherInstanceURL = "http://localhost:8082/api/v1/auth/verify-token/"+token; // TODO : Change to main url
+        return restTemplate.getForObject((otherInstanceURL), AuthTransactionDto.class);
+    }
+
+    private Supplier<AuthTransactionDto> getAuthTransactionDtoSupplier(String token) {
+        return () -> {
+            try {
+                return verifyToken(token);
+            } catch (InterruptedException e) {
+                throw new RuntimeException();
+            }
+        };
+    }
+
+    public AuthTransactionDto getAuthTransactionDto(PenitipanRequest request){
+        CompletableFuture<AuthTransactionDto> futureDto = CompletableFuture.supplyAsync(
+                getAuthTransactionDtoSupplier(request.getUserToken())
+        );
+
+        AuthTransactionDto dto = futureDto.join();
+        System.out.println(dto.getIdCustomer());
+
+        System.out.println(dto.getUsername());
+        return dto;
+    }
 
     @Override
     public List<PenitipanAdminResponse> findAll() {
@@ -33,13 +64,13 @@ public class PenitipanServiceImpl implements PenitipanService{
                 .toList();
     }
 
-    //@Override
-    //public List<PenitipanUserResponse> findAllByUserId(Integer userId) {
-    //    return penitipanRepository.findAllByUserId(userId)
-    //            .stream()
-    //            .map(PenitipanUserResponse::fromPenitipan)
-    //            .toList();
-    //}
+    @Override
+    public List<PenitipanUserResponse> findAllByUserId(PenitipanRequest request) {
+        return penitipanRepository.findAllByUserId(getAuthTransactionDto(request).getIdCustomer())
+                .stream()
+                .map(PenitipanUserResponse::fromPenitipan)
+                .toList();
+    }
 
     @Override
     public Penitipan findById(Integer id) {
@@ -51,14 +82,18 @@ public class PenitipanServiceImpl implements PenitipanService{
     }
 
     @Override
-    public Penitipan create(Integer userId, PenitipanRequest penitipanRequest) {
-        Integer idHewan = penitipanRequest.getHewan().getId();
-        if (isHewanDoesNotExist(idHewan)){
-            throw new HewanDoesNotExistException(idHewan);
-        }
+    public Penitipan create(PenitipanRequest penitipanRequest) {
+        var hewan = Hewan.builder()
+                .nama(penitipanRequest.getNamaHewan())
+                .beratHewan(penitipanRequest.getBeratHewan())
+                .tipeHewan(penitipanRequest.getTipeHewan())
+                .build();
+        hewanRepository.save(hewan);
+        Integer idHewan = hewan.getId();
+        Integer userId = getAuthTransactionDto(penitipanRequest).getIdCustomer();
         var penitipan = Penitipan.builder()
-                //.user()// Todo Hubungkan dengan authentication microservice
-                .hewan(penitipanRequest.getHewan())
+                .userId(userId)
+                .hewan(hewan)
                 .tanggalPenitipan(penitipanRequest.getTanggalPenitipan())
                 .tanggalPengambilan(penitipanRequest.getTanggalPengambilan())
                 .statusPenitipan(StatusPenitipan.UNVERIFIED_PENITIPAN)
@@ -69,18 +104,19 @@ public class PenitipanServiceImpl implements PenitipanService{
     }
 
     @Override
-    public Penitipan update(Integer userId, Integer id, PenitipanRequest penitipanRequest) {
-        if (isPenitipanDoesNotExist(id)) {
-            throw new PenitipanDoesNotExistException(id);
-        }
-        Integer idHewan = penitipanRequest.getHewan().getId();
-        if (isHewanDoesNotExist(idHewan)){
-            throw new HewanDoesNotExistException(idHewan);
-        }
+    public Penitipan update(Integer id, PenitipanRequest penitipanRequest) {
+        var hewan = Hewan.builder()
+                .nama(penitipanRequest.getNamaHewan())
+                .beratHewan(penitipanRequest.getBeratHewan())
+                .tipeHewan(penitipanRequest.getTipeHewan())
+                .build();
+        hewanRepository.save(hewan);
+        Integer idHewan = hewan.getId();
+        Integer userId = getAuthTransactionDto(penitipanRequest).getIdCustomer();
         var penitipan = Penitipan.builder()
                 .id(id)
-               // .user()// Todo Hubungkan dengan authentication microservice
-                .hewan(penitipanRequest.getHewan())
+                .userId(userId)
+                .hewan(hewan)
                 .tanggalPenitipan(penitipanRequest.getTanggalPenitipan())
                 .tanggalPengambilan(penitipanRequest.getTanggalPengambilan())
                 .statusPenitipan(StatusPenitipan.UNVERIFIED_PENITIPAN)
@@ -100,15 +136,16 @@ public class PenitipanServiceImpl implements PenitipanService{
     }
 
     @Override
-    public Penitipan cancel(Integer userId, Integer penitipanId) {
-        // TODO: Cancel penitipan
-        return null;
-    }
+    public Penitipan cancel(PenitipanRequest penitipanRequest) {
+        Optional<Penitipan> optionalPenitipan = penitipanRepository.findById(penitipanRequest.getPenitipanId());
+        if (optionalPenitipan.isEmpty()) {
+            throw new PenitipanDoesNotExistException(penitipanRequest.getPenitipanId());
+        }
+        Penitipan penitipan = optionalPenitipan.get();
+        penitipan.setStatusPenitipan(StatusPenitipan.CANCELED_PENITIPAN);
+        penitipanRepository.save(penitipan);
 
-    @Override
-    public List<PenitipanUserResponse> findAllByUserId(Integer userId) {
-        // TODO: Find all penitipan by user id
-        return null;
+        return penitipan;
     }
 
     @Override
@@ -142,7 +179,7 @@ public class PenitipanServiceImpl implements PenitipanService{
     }
 
     @Override
-    public Penitipan verify(Integer userId, Integer id){
+    public Penitipan verify(Integer id){
         Optional<Penitipan> optionalPenitipan = penitipanRepository.findById(id);
         if (optionalPenitipan.isEmpty()) {
             throw new PenitipanDoesNotExistException(id);
@@ -155,7 +192,7 @@ public class PenitipanServiceImpl implements PenitipanService{
     }
 
     @Override
-    public Penitipan ambilHewan(Integer userId, Integer id){
+    public Penitipan ambilHewan(Integer id){
         Optional<Penitipan> optionalPenitipan = penitipanRepository.findById(id);
         if (optionalPenitipan.isEmpty()) {
             throw new PenitipanDoesNotExistException(id);
@@ -181,7 +218,4 @@ public class PenitipanServiceImpl implements PenitipanService{
         return penitipanRepository.findById(id).isEmpty();
     }
 
-    private boolean isHewanDoesNotExist(Integer id){
-        return hewanRepository.findById(id).isEmpty();
-    }
 }

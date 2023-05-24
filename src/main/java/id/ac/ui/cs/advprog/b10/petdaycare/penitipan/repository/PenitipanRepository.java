@@ -12,11 +12,9 @@ public interface PenitipanRepository extends JpaRepository<Penitipan, Integer> {
     @NonNull
     List<Penitipan> findAll();
 
-    //List<Penitipan> findAllByUserId(Integer userId);
+    List<Penitipan> findAllByUserId(Integer userId);
     @NonNull
     Optional<Penitipan> findById(@NonNull Integer id);
-
-    Object findAllByUserId(Integer userId);
 
     Object findAllByHewanId(Integer hewanId);
 

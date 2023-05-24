@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,10 +35,13 @@ class PenitipanServiceImplTest {
     @Mock
     private HewanRepository hewanRepository;
 
+    @Mock
+    private RestTemplate restTemplate;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        penitipanService = new PenitipanServiceImpl(penitipanRepository, hewanRepository);
+        penitipanService = new PenitipanServiceImpl(penitipanRepository, hewanRepository,restTemplate);
     }
 
     @Test
@@ -79,6 +83,7 @@ class PenitipanServiceImplTest {
         PenitipanRequest request = new PenitipanRequest();
         Hewan hewan = new Hewan(); // Create a new Hewan object
         hewan.setId(hewanId); // Set the id attribute
+        request.setUserId(userId);
         request.setHewan(hewan);
         request.setTanggalPenitipan(new Date());
         request.setTanggalPengambilan(new Date());
@@ -87,7 +92,7 @@ class PenitipanServiceImplTest {
         when(hewanRepository.findById(hewanId)).thenReturn(Optional.of(hewan)); // Return the same Hewan object from the repository
         when(penitipanRepository.save(any(Penitipan.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Penitipan result = penitipanService.create(userId, request);
+        Penitipan result = penitipanService.create(request);
 
         assertNotNull(result);
         assertEquals(hewanId, result.getHewan().getId());
@@ -130,7 +135,7 @@ class PenitipanServiceImplTest {
         when(hewanRepository.findById(hewanId)).thenReturn(Optional.of(hewan)); // Return the same Hewan object from the repository
         when(penitipanRepository.save(any(Penitipan.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Penitipan result = penitipanService.update(userId, penitipanId, request);
+        Penitipan result = penitipanService.update(penitipanId, request);
 
         assertNotNull(result);
         assertEquals(penitipanId, result.getId());
@@ -153,7 +158,7 @@ class PenitipanServiceImplTest {
 
         when(penitipanRepository.findById(penitipanId)).thenReturn(Optional.empty());
 
-        assertThrows(PenitipanDoesNotExistException.class, () -> penitipanService.update(userId, penitipanId, request));
+        assertThrows(PenitipanDoesNotExistException.class, () -> penitipanService.update(penitipanId, request));
         verify(penitipanRepository, times(1)).findById(penitipanId);
         verify(hewanRepository, never()).findById(anyInt());
         verify(penitipanRepository, never()).save(any(Penitipan.class));
@@ -209,7 +214,7 @@ class PenitipanServiceImplTest {
         when(penitipanRepository.findById(penitipanId)).thenReturn(Optional.of(penitipan));
         when(penitipanRepository.save(penitipan)).thenReturn(penitipan);
 
-        Penitipan result = penitipanService.verify(userId, penitipanId);
+        Penitipan result = penitipanService.verify(penitipanId);
 
         assertNotNull(result);
         assertEquals(StatusPenitipan.VERIFIED_PENITIPAN, result.getStatusPenitipan());
@@ -223,7 +228,7 @@ class PenitipanServiceImplTest {
         Integer penitipanId = 1;
         when(penitipanRepository.findById(penitipanId)).thenReturn(Optional.empty());
 
-        assertThrows(PenitipanDoesNotExistException.class, () -> penitipanService.verify(userId, penitipanId));
+        assertThrows(PenitipanDoesNotExistException.class, () -> penitipanService.verify(penitipanId));
         verify(penitipanRepository, times(1)).findById(penitipanId);
         verify(penitipanRepository, never()).save(any(Penitipan.class));
     }

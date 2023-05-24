@@ -1,6 +1,5 @@
 package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.hewan.Hewan;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,13 +19,8 @@ public class Penitipan {
     @Id
     @GeneratedValue
     private Integer id;
-    // TODO : Hubungkan dengan user yang melakukan penitipan melalui auth
-//    @ManyToOne
-//    @JoinColumn(name = "_user_id", nullable = false)
-    private String userToken;
     private Integer userId;
 
-    // TODO : Pastikan asumsi satu penitipan hanya menitipkan satu hewan benar
     @OneToOne
     private Hewan hewan;
     @Enumerated(EnumType.STRING)

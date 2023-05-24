@@ -15,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PenitipanAdminResponse {
-    private String userToken;
+    private Integer userId;
     private Integer penitipanId;
     private Hewan hewan;
     private StatusPenitipan statusPenitipan;
@@ -26,7 +26,7 @@ public class PenitipanAdminResponse {
 
     public static PenitipanAdminResponse fromPenitipan(Penitipan penitipan){
         return PenitipanAdminResponse.builder()
-                .userToken(penitipan.getUserToken()) // TODO : Buat hubungan ke class user di auth
+                .userId(penitipan.getUserId())
                 .penitipanId(penitipan.getId())
                 .hewan(penitipan.getHewan())
                 .tanggalPenitipan(penitipan.getTanggalPenitipan())

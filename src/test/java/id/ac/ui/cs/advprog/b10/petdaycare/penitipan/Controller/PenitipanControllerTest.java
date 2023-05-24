@@ -49,13 +49,13 @@ class PenitipanControllerTest {
     void testCreatePenitipan() {
         PenitipanRequest request = new PenitipanRequest();
         Penitipan expectedResponse = new Penitipan();
-        when(penitipanService.create(anyInt(), eq(request))).thenReturn(expectedResponse);
+        when(penitipanService.create(eq(request))).thenReturn(expectedResponse);
 
         ResponseEntity<Penitipan> responseEntity = penitipanController.createPenitipan(request);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(expectedResponse, responseEntity.getBody());
-        verify(penitipanService, times(1)).create(anyInt(), eq(request));
+        verify(penitipanService, times(1)).create(eq(request));
     }
 
     @Test
@@ -63,13 +63,13 @@ class PenitipanControllerTest {
         int id = 1;
         PenitipanRequest request = new PenitipanRequest();
         Penitipan expectedResponse = new Penitipan();
-        when(penitipanService.update(anyInt(), eq(id), eq(request))).thenReturn(expectedResponse);
+        when(penitipanService.update(eq(id), eq(request))).thenReturn(expectedResponse);
 
         ResponseEntity<Penitipan> responseEntity = penitipanController.updateOrder(id, request);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(expectedResponse, responseEntity.getBody());
-        verify(penitipanService, times(1)).update(anyInt(), eq(id), eq(request));
+        verify(penitipanService, times(1)).update(eq(id), eq(request));
     }
 
     @Test
@@ -87,25 +87,25 @@ class PenitipanControllerTest {
     void testVerifyPenitipan() {
         int id = 1;
         Penitipan expectedResponse = new Penitipan();
-        when(penitipanService.verify(anyInt(), eq(id))).thenReturn(expectedResponse);
+        when(penitipanService.verify(eq(id))).thenReturn(expectedResponse);
 
         ResponseEntity<Penitipan> responseEntity = penitipanController.verifyPenitipan(id);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(expectedResponse, responseEntity.getBody());
-        verify(penitipanService, times(1)).verify(anyInt(), eq(id));
+        verify(penitipanService, times(1)).verify(eq(id));
     }
 
     @Test
     void testPengambilanHewan() {
         int id = 1;
         Penitipan expectedResponse = new Penitipan();
-        when(penitipanService.ambilHewan(anyInt(), eq(id))).thenReturn(expectedResponse);
+        when(penitipanService.ambilHewan(eq(id))).thenReturn(expectedResponse);
 
         ResponseEntity<Penitipan> responseEntity = penitipanController.pengambilanHewan(id);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(expectedResponse, responseEntity.getBody());
-        verify(penitipanService, times(1)).ambilHewan(anyInt(), eq(id));
+        verify(penitipanService, times(1)).ambilHewan(eq(id));
     }
 }

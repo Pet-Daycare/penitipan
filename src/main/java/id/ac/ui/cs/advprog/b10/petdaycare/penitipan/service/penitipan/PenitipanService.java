@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.penitipan;
 
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.auth.CustomerRequest;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanAdminResponse;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanRequest;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanUserResponse;
@@ -12,18 +13,17 @@ import java.util.List;
 @Service
 public interface PenitipanService {
     List<PenitipanAdminResponse> findAll();
-    //List<PenitipanUserResponse> findAllByUserId(Integer userId);
+    List<PenitipanUserResponse> findAllByUserId(PenitipanRequest penitipanRequest);
 
     Penitipan findById(Integer id);
-    Penitipan create(Integer userId, PenitipanRequest request);
-    Penitipan update(Integer userId, Integer id, PenitipanRequest request);
-    Penitipan verify(Integer userId, Integer id);
-    Penitipan ambilHewan(Integer userId, Integer id);
+    Penitipan create(PenitipanRequest penitipanRequest);
+    Penitipan update(Integer id, PenitipanRequest request);
+    Penitipan verify(Integer id);
+    Penitipan ambilHewan(Integer id);
     void delete(Integer id);
 
-    Penitipan cancel(Integer userId, Integer penitipanId);
+    Penitipan cancel(PenitipanRequest penitipanRequest);
 
-    List<PenitipanUserResponse> findAllByUserId(Integer userId);
 
     List<PenitipanAdminResponse> findAllByHewanId(Integer hewanId);
 

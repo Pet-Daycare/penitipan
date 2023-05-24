@@ -4,16 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Properties;
 
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
-    static final String password = "ibyqedrbaximjxgg";
+    static final String PASSWORD = "ibyqedrbaximjxgg";
 
     @Bean
     public JavaMailSender getJavaMailSender() {
@@ -22,7 +22,7 @@ public class ApplicationConfig {
         mailSender.setPort(587);
 
         mailSender.setUsername("petdaycare.b10@gmail.com");
-        mailSender.setPassword(password);
+        mailSender.setPassword(PASSWORD);
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
@@ -31,6 +31,11 @@ public class ApplicationConfig {
         props.put("mail.debug", "true");
 
         return mailSender;
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 
 }
