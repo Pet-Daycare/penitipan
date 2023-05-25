@@ -4,6 +4,7 @@ import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanAdminResp
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanRequest;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanUserResponse;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Penitipan;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.StatusPenitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.penitipan.PenitipanFindService;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.penitipan.PenitipanService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,14 @@ public class PenitipanController {
         response = penitipanFindService.findAll();
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/find/{statusPenitipan}")
+    public ResponseEntity<List<PenitipanAdminResponse>> getAllOrderByStatus(@PathVariable StatusPenitipan statusPenitipan){
+        List<PenitipanAdminResponse> response;
+        response = penitipanFindService.findAllByStatus(statusPenitipan);
+        return  ResponseEntity.ok(response);
+    }
+
 
     @GetMapping("/find/me")
     public ResponseEntity<List<PenitipanUserResponse>> getAllUserOrder(@RequestBody PenitipanRequest penitipanRequest) {
