@@ -51,7 +51,7 @@ public class PenitipanController {
         return ResponseEntity.ok(String.format("Deleted Order with id %d", id));
     }
 
-    @PatchMapping("/verify/{id}")
+    @PutMapping("/verify/{id}")
     public ResponseEntity<Penitipan> verifyPenitipan(@PathVariable Integer id ) {
         Penitipan response = penitipanService.verifyPayment(id);
         return ResponseEntity.ok(response);

@@ -20,7 +20,6 @@ public class Penitipan {
     @GeneratedValue
     private Integer id;
     private Integer userId;
-
     @OneToOne
     private Hewan hewan;
     @Enumerated(EnumType.STRING)
