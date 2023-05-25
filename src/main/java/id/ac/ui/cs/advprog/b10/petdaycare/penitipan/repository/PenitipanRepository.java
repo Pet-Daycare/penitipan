@@ -20,7 +20,7 @@ public interface PenitipanRepository extends JpaRepository<Penitipan, Integer> {
 
     List<Penitipan> findAllByStatusPenitipan(StatusPenitipan statusPenitipan);
 
-    Object findAllByUserIdAndStatusPenitipan(Integer userId, StatusPenitipan statusPenitipan);
+    List<Penitipan> findAllByUserIdAndStatusPenitipan(Integer userId, StatusPenitipan statusPenitipan);
 
-    Object findAllByHewanIdAndStatusPenitipan(Integer hewanId, StatusPenitipan statusPenitipan);
+    List<Penitipan> findAllByHewanIdAndStatusPenitipan(Integer hewanId, StatusPenitipan statusPenitipan);
 }
