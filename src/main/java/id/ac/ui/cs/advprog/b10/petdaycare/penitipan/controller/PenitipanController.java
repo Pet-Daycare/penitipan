@@ -4,6 +4,7 @@ import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanAdminResp
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanRequest;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanUserResponse;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Penitipan;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.penitipan.PenitipanFindService;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.penitipan.PenitipanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,18 +17,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PenitipanController {
     private final PenitipanService penitipanService;
+    private final PenitipanFindService penitipanFindService;
 
-    @GetMapping("/all")
+    @GetMapping("/find/all")
     public ResponseEntity<List<PenitipanAdminResponse>> getAllOrder() {
-        List<PenitipanAdminResponse> response = null;
-        response = penitipanService.findAll();
+        List<PenitipanAdminResponse> response;
+        response = penitipanFindService.findAll();
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/me")
+    @GetMapping("/find/me")
     public ResponseEntity<List<PenitipanUserResponse>> getAllUserOrder(@RequestBody PenitipanRequest penitipanRequest) {
-        List<PenitipanUserResponse> response = null;
-        response = penitipanService.findAllByUserId(penitipanRequest);
+        List<PenitipanUserResponse> response;
+        response = penitipanFindService.findAllByUserId(penitipanRequest);
        return ResponseEntity.ok(response);
     }
 
@@ -56,8 +58,26 @@ public class PenitipanController {
     }
 
     @PatchMapping("/ambil/{id}")
-        public ResponseEntity<Penitipan> pengambilanHewan(@PathVariable Integer id){
+    public ResponseEntity<Penitipan> pengambilanHewan(@PathVariable Integer id){
         Penitipan response = penitipanService.ambilHewan(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("pay/complete/{id}")
+    public ResponseEntity<Penitipan> payComplete(@PathVariable Integer id){
+        Penitipan response = penitipanService.payComplete(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("cancel/{id}")
+    public ResponseEntity<Penitipan> cancel(@PathVariable Integer id){
+        Penitipan response = penitipanService.cancel(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("complete/{id}")
+    public ResponseEntity<Penitipan> complete(@PathVariable Integer id){
+        Penitipan response = penitipanService.complete(id);
         return ResponseEntity.ok(response);
     }
 

@@ -3,6 +3,7 @@ package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.Service;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.HewanRequest;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.HewanDoesNotExistException;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.hewan.Hewan;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.hewan.TipeHewan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.HewanRepository;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.hewan.HewanServiceImpl;
 
@@ -38,29 +39,29 @@ class HewanServiceImplTest {
     void setUp() {
         createRequest = HewanRequest.builder()
                 .nama("Jimmy")
-                .beratHewan("30Kg")
-                .tipeHewan("Kucing")
+                .beratHewan(30)
+                .tipeHewan(TipeHewan.CAT)
                 .build();
 
         updateRequest = HewanRequest.builder()
                 .nama("Bob")
-                .beratHewan("30Kg")
-                .tipeHewan("Kucing")
+                .beratHewan(30)
+                .tipeHewan(TipeHewan.CAT)
                 .build();
 
 
         hewan = Hewan.builder()
                 .id(0)
                 .nama("Jimmy")
-                .beratHewan("30Kg")
-                .tipeHewan("Kucing")
+                .beratHewan(30)
+                .tipeHewan(TipeHewan.CAT)
                 .build();
 
         newHewan = Hewan.builder()
                 .id(0)
                 .nama("Bob")
-                .beratHewan("30Kg")
-                .tipeHewan("Kucing")
+                .beratHewan(30)
+                .tipeHewan(TipeHewan.CAT)
                 .build();
     }
     @Test
