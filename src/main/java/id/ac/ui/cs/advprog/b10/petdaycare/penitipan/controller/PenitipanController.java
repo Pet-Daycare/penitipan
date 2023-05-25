@@ -28,9 +28,9 @@ public class PenitipanController {
     }
 
     @GetMapping("/find/{statusPenitipan}")
-    public ResponseEntity<List<PenitipanAdminResponse>> getAllOrderByStatus(@PathVariable StatusPenitipan statusPenitipan){
+    public ResponseEntity<List<PenitipanAdminResponse>> getAllOrderByStatus(@PathVariable String statusPenitipan){
         List<PenitipanAdminResponse> response;
-        response = penitipanFindService.findAllByStatus(statusPenitipan);
+        response = penitipanFindService.findAllByStatus(StatusPenitipan.valueOf(statusPenitipan));
         return  ResponseEntity.ok(response);
     }
 
