@@ -61,7 +61,7 @@ public class PenitipanFindServiceImpl implements PenitipanFindService{
 
     @Override
     public List<PenitipanUserResponse> findAllByUserId(PenitipanRequest request) {
-        return penitipanRepository.findAllByUserId(getUserId(request))
+        return penitipanRepository.findAllByUserId(request.getUserId())
                 .stream()
                 .map(PenitipanUserResponse::fromPenitipan)
                 .toList();
