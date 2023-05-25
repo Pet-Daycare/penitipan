@@ -95,14 +95,18 @@ public class PenitipanFindServiceImpl implements PenitipanFindService{
 
     @Override
     public List<PenitipanUserResponse> findAllByUserIdAndStatus(Integer userId, StatusPenitipan statusPenitipan) {
-        // TODO: Find all penitipan by user id and status
-        return null;
+        return penitipanRepository.findAllByUserIdAndStatusPenitipan(userId, statusPenitipan)
+                .stream()
+                .map(PenitipanUserResponse::fromPenitipan)
+                .toList();
     }
 
     @Override
     public List<PenitipanAdminResponse> findAllByHewanIdAndStatus(Integer hewanId, StatusPenitipan statusPenitipan) {
-        // TODO: Find all penitipan by hewan id and status
-        return null;
+        return penitipanRepository.findAllByHewanIdAndStatusPenitipan(hewanId, statusPenitipan)
+                .stream()
+                .map(PenitipanAdminResponse::fromPenitipan)
+                .toList();
     }
 
 }
