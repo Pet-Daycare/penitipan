@@ -16,7 +16,6 @@ public class PaymentServiceImpl implements PaymentService {
 
     PenitipanCostCalculator penitipanCost;
 
-    // todo : post payment
     @Override
     public Double calculatePrice(Penitipan penitipan) {
         TipeHewan tipeHewan = penitipan.getHewan().getTipeHewan();
