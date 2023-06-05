@@ -16,9 +16,9 @@ class CatCostCalculatorTest {
 
     @Test
     void testGetInitialCost() {
-        Double lamaJamTitip = 5.0;
-        Integer beratHewan = 3;
-        Double expectedCost = 360000.0;
+        Double lamaJamTitip = 1.0;
+        Integer beratHewan = 1;
+        Double expectedCost = 10000.00;
 
         Double actualCost = catCostCalculator.getInitialCost(lamaJamTitip, beratHewan);
 

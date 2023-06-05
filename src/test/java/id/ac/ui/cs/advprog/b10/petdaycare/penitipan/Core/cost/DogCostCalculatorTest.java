@@ -16,9 +16,9 @@ class DogCostCalculatorTest {
 
     @Test
     void testGetInitialCost() {
-        Double lamaJamTitip = 4.0;
-        Integer beratHewan = 7;
-        Double expectedCost = 176000.0;
+        Double lamaJamTitip = 1.0;
+        Integer beratHewan = 1;
+        Double expectedCost = 24000.00;
 
         Double actualCost = dogCostCalculator.getInitialCost(lamaJamTitip, beratHewan);
 

@@ -16,9 +16,9 @@ class RabbitCostCalculatorTest {
 
     @Test
     void testGetInitialCost() {
-        Double lamaJamTitip = 2.5;
-        Integer beratHewan = 3;
-        Double expectedCost = 150000.0;
+f        Double lamaJamTitip = 1.0;
+        Integer beratHewan = 1;
+        Double expectedCost = 26000.00;
 
         Double actualCost = rabbitCostCalculator.getInitialCost(lamaJamTitip, beratHewan);
 

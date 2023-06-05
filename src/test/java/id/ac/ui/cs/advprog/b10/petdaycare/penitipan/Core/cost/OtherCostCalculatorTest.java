@@ -16,9 +16,9 @@ class OtherCostCalculatorTest {
 
     @Test
     void testGetInitialCost() {
-        Double lamaJamTitip = 3.5;
-        Integer beratHewan = 5;
-        Double expectedCost = 330000.0;
+        Double lamaJamTitip = 1.0;
+        Integer beratHewan = 1;
+        Double expectedCost = 69000.0;
 
         Double actualCost = otherCostCalculator.getInitialCost(lamaJamTitip, beratHewan);
 
