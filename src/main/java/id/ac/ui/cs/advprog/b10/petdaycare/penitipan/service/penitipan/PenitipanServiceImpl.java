@@ -36,7 +36,7 @@ public class PenitipanServiceImpl implements PenitipanService{
     }
 
     private AuthTransactionDto verifyToken(String token){
-        String otherInstanceURL = "http://localhost:8082/api/v1/auth/verify-token/"+token; // TODO : Change to main url
+        String otherInstanceURL = "http://localhost:8080/api/v1/auth/verify-token/"+token; // TODO : Change to main url
         return restTemplate.getForObject((otherInstanceURL), AuthTransactionDto.class);
     }
 
@@ -61,7 +61,7 @@ public class PenitipanServiceImpl implements PenitipanService{
                 .tipeHewan(TipeHewan.valueOf(penitipanRequest.getTipeHewan()))
                 .build();
         hewanRepository.save(hewan);
-        Integer userId = getUserId(penitipanRequest);
+        Integer userId = penitipanRequest.getUserId();
         var penitipan = Penitipan.builder()
                 .userId(userId)
                 .hewan(hewan)

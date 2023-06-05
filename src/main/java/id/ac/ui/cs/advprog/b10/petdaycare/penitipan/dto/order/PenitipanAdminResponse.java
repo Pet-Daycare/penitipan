@@ -17,6 +17,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class PenitipanAdminResponse {
     private Integer userId;
+    private String username;
+    private  String namaHewan;
     private Integer penitipanId;
     private Hewan hewan;
     private StatusPenitipan statusPenitipan;

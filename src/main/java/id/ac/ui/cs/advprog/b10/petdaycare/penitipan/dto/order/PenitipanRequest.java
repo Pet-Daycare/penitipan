@@ -24,4 +24,5 @@ public class PenitipanRequest {
     private String statusPenitipan;
     private Integer userId;
     private String userToken;
+    private String username;
 }
