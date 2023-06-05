@@ -3,9 +3,12 @@ package id.ac.ui.cs.advprog.b10.petdaycare.penitipan.Controller;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.controller.PenitipanController;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanAdminResponse;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanRequest;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.PenitipanDoesNotExistException;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Penitipan;
+import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.StatusPenitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.penitipan.PenitipanFindService;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.penitipan.PenitipanService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -14,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -111,4 +115,145 @@ class PenitipanControllerTest {
         assertEquals(expectedResponse, responseEntity.getBody());
         verify(penitipanService, times(1)).ambilHewan(id);
     }
+
+    @Test
+    void testComplete_Success() {
+        // Arrange
+        Integer id = 1;
+        Penitipan expectedPenitipan = new Penitipan();
+        when(penitipanService.complete(id)).thenReturn(expectedPenitipan);
+
+        // Act
+        ResponseEntity<Penitipan> response = penitipanController.complete(id);
+
+        // Assert
+        Assertions.assertEquals(expectedPenitipan, response.getBody());
+        Assertions.assertEquals(ResponseEntity.ok(expectedPenitipan), response);
+        verify(penitipanService, times(1)).complete(id);
+    }
+
+    @Test
+    void testComplete_PenitipanDoesNotExist() {
+        // Arrange
+        Integer id = 1;
+        when(penitipanService.complete(id)).thenThrow(new PenitipanDoesNotExistException(id));
+
+        // Act
+        Assertions.assertThrows(PenitipanDoesNotExistException.class, () -> {
+            penitipanController.complete(id);
+        });
+
+        // Assert
+        verify(penitipanService, times(1)).complete(id);
+    }
+
+    @Test
+    void testCancel_Success() {
+        // Arrange
+        Integer id = 1;
+        Penitipan expectedPenitipan = new Penitipan();
+        when(penitipanService.cancel(id)).thenReturn(expectedPenitipan);
+
+        // Act
+        ResponseEntity<Penitipan> response = penitipanController.cancel(id);
+
+        // Assert
+        Assertions.assertEquals(expectedPenitipan, response.getBody());
+        Assertions.assertEquals(ResponseEntity.ok(expectedPenitipan), response);
+        verify(penitipanService, times(1)).cancel(id);
+    }
+
+    @Test
+    void testCancel_PenitipanDoesNotExist() {
+        // Arrange
+        Integer id = 1;
+        when(penitipanService.cancel(id)).thenThrow(new PenitipanDoesNotExistException(id));
+
+        // Act
+        Assertions.assertThrows(PenitipanDoesNotExistException.class, () -> {
+            penitipanController.cancel(id);
+        });
+
+        // Assert
+        verify(penitipanService, times(1)).cancel(id);
+    }
+
+    @Test
+    void testPayComplete_Success() {
+        // Arrange
+        Integer id = 1;
+        Penitipan expectedPenitipan = new Penitipan();
+        when(penitipanService.payComplete(id)).thenReturn(expectedPenitipan);
+
+        // Act
+        ResponseEntity<Penitipan> response = penitipanController.payComplete(id);
+
+        // Assert
+        Assertions.assertEquals(expectedPenitipan, response.getBody());
+        Assertions.assertEquals(ResponseEntity.ok(expectedPenitipan), response);
+        verify(penitipanService, times(1)).payComplete(id);
+    }
+
+    @Test
+    void testPayComplete_PenitipanDoesNotExist() {
+        // Arrange
+        Integer id = 1;
+        when(penitipanService.payComplete(id)).thenThrow(new PenitipanDoesNotExistException(id));
+
+        // Act
+        Assertions.assertThrows(PenitipanDoesNotExistException.class, () -> {
+            penitipanController.payComplete(id);
+        });
+
+        // Assert
+        verify(penitipanService, times(1)).payComplete(id);
+    }
+
+    @Test
+    void testGetPenitipanById_Success() {
+        // Arrange
+        Integer id = 1;
+        Penitipan expectedPenitipan = new Penitipan();
+        when(penitipanFindService.findPenitipanById(id)).thenReturn(expectedPenitipan);
+
+        // Act
+        ResponseEntity<Penitipan> response = penitipanController.getPenitipanById(id);
+
+        // Assert
+        Assertions.assertEquals(expectedPenitipan, response.getBody());
+        Assertions.assertEquals(ResponseEntity.ok(expectedPenitipan), response);
+        verify(penitipanFindService, times(1)).findPenitipanById(id);
+    }
+
+    @Test
+    void testGetPenitipanById_PenitipanDoesNotExist() {
+        // Arrange
+        Integer id = 1;
+        when(penitipanFindService.findPenitipanById(id)).thenThrow(new PenitipanDoesNotExistException(id));
+
+        // Act
+        Assertions.assertThrows(PenitipanDoesNotExistException.class, () -> {
+            penitipanController.getPenitipanById(id);
+        });
+
+        // Assert
+        verify(penitipanFindService, times(1)).findPenitipanById(id);
+    }
+
+    @Test
+    void testGetAllOrderByStatus_Success() {
+        // Arrange
+        String statusPenitipan = "UNVERIFIED_PENITIPAN";
+        List<PenitipanAdminResponse> expectedResponse = Arrays.asList(new PenitipanAdminResponse(), new PenitipanAdminResponse());
+        when(penitipanFindService.findAllByStatus(StatusPenitipan.UNVERIFIED_PENITIPAN)).thenReturn(expectedResponse);
+
+        // Act
+        ResponseEntity<List<PenitipanAdminResponse>> response = penitipanController.getAllOrderByStatus(statusPenitipan);
+
+        // Assert
+        Assertions.assertEquals(expectedResponse, response.getBody());
+        Assertions.assertEquals(ResponseEntity.ok(expectedResponse), response);
+        verify(penitipanFindService, times(1)).findAllByStatus(StatusPenitipan.UNVERIFIED_PENITIPAN);
+    }
+
 }
