@@ -28,9 +28,9 @@ public class PenitipanController {
     }
 
     @GetMapping("/find/{statusPenitipan}")
-    public ResponseEntity<List<PenitipanAdminResponse>> getAllOrderByStatus(@PathVariable String statusPenitipan){
+    public ResponseEntity<List<PenitipanAdminResponse>> getAllOrderByStatus(@PathVariable StatusPenitipan statusPenitipan){
         List<PenitipanAdminResponse> response;
-        response = penitipanFindService.findAllByStatus(StatusPenitipan.valueOf(statusPenitipan));
+        response = penitipanFindService.findAllByStatus(statusPenitipan);
         return  ResponseEntity.ok(response);
     }
 
@@ -42,9 +42,24 @@ public class PenitipanController {
        return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/me/frontend")
+    public ResponseEntity<List<PenitipanUserResponse>> getAllUserOrder(@RequestParam Integer userId) {
+        List<PenitipanUserResponse> response;
+        PenitipanRequest request = new PenitipanRequest();
+        request.setUserId(userId);
+        response = penitipanFindService.findAllByUserId(request);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Penitipan> createPenitipan(@RequestBody PenitipanRequest penitipanRequest) {
         Penitipan response = penitipanService.create(penitipanRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Penitipan> getPenitipanById(@PathVariable Integer id) {
+        Penitipan response = penitipanFindService.findPenitipanById(id);
         return ResponseEntity.ok(response);
     }
 
@@ -60,7 +75,7 @@ public class PenitipanController {
         return ResponseEntity.ok(String.format("Deleted Order with id %d", id));
     }
 
-    @PatchMapping("/verify/{id}")
+    @PutMapping("/verify/{id}")
     public ResponseEntity<Penitipan> verifyPenitipan(@PathVariable Integer id ) {
         Penitipan response = penitipanService.verifyPayment(id);
         return ResponseEntity.ok(response);

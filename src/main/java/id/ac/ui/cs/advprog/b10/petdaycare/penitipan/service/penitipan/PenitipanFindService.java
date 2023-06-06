@@ -13,8 +13,5 @@ public interface PenitipanFindService {
     List<PenitipanAdminResponse> findAll();
     List<PenitipanUserResponse> findAllByUserId(PenitipanRequest penitipanRequest);
     Penitipan findPenitipanById(Integer id);
-    Penitipan findByHewanId(Integer hewanId);
     List<PenitipanAdminResponse> findAllByStatus(StatusPenitipan statusPenitipan);
-    List<PenitipanUserResponse> findAllByUserIdAndStatus(Integer userId, StatusPenitipan statusPenitipan);
-    List<PenitipanAdminResponse> findAllByHewanIdAndStatus(Integer hewanId, StatusPenitipan statusPenitipan);
 }
