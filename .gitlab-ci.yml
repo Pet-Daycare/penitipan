@@ -26,6 +26,7 @@ sonarcloud-check:
     - merge_requests
     - master
     - develop
+    - post-sprint-revision
   allow_failure: true
 
 stages:
@@ -92,7 +93,7 @@ Publish:
     - dind
   only:
     - master
-
+    - post-sprint-revision
 
 Deploy:
   stage: deploy
@@ -107,3 +108,4 @@ Deploy:
       docker run --name $CONTAINER_NAME -d -p 80:8080 $REGISTRY_USER/$IMAGE_NAME:$IMAGE_TAG"
   only:
     - master
+    - post-sprint-revision
