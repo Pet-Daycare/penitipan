@@ -243,7 +243,7 @@ class PenitipanControllerTest {
     @Test
     void testGetAllOrderByStatus_Success() {
         // Arrange
-        String statusPenitipan = "UNVERIFIED_PENITIPAN";
+        StatusPenitipan statusPenitipan = StatusPenitipan.UNVERIFIED_PENITIPAN;
         List<PenitipanAdminResponse> expectedResponse = Arrays.asList(new PenitipanAdminResponse(), new PenitipanAdminResponse());
         when(penitipanFindService.findAllByStatus(StatusPenitipan.UNVERIFIED_PENITIPAN)).thenReturn(expectedResponse);
 
