@@ -15,6 +15,7 @@ import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.service.payment.PaymentServi
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -41,7 +42,7 @@ public class PenitipanServiceImpl implements PenitipanService{
                 .tipeHewan(TipeHewan.valueOf(penitipanRequest.getTipeHewan()))
                 .build();
         hewanRepository.save(hewan);
-        Integer userId = penitipanRequest.getUserId();
+        Integer userId = getUserId(penitipanRequest);
         var penitipan = Penitipan.builder()
                 .userId(userId)
                 .hewan(hewan)
@@ -67,7 +68,7 @@ public class PenitipanServiceImpl implements PenitipanService{
         hewan.setBeratHewan(penitipanRequest.getBeratHewan());
         hewan.setTipeHewan(TipeHewan.valueOf(penitipanRequest.getTipeHewan()));
         hewanRepository.save(hewan);
-        Integer userId = penitipan.getUserId();
+        Integer userId = getUserId(penitipanRequest);
         penitipan = Penitipan.builder()
                 .id(id)
                 .userId(userId)
@@ -122,8 +123,8 @@ public class PenitipanServiceImpl implements PenitipanService{
     public Penitipan ambilHewan(Integer id){
         Penitipan penitipan = penitipanFindService.findPenitipanById(id);
 
-        LocalDateTime currentDate = LocalDateTime.now();
-        LocalDateTime supposedReturnDate = penitipan.getTanggalPengambilan();
+        LocalDate currentDate = LocalDate.now();
+        LocalDate supposedReturnDate = penitipan.getTanggalPengambilan().toLocalDate();
         if (currentDate.isAfter(supposedReturnDate)){
             penitipan.setStatusPenitipan(StatusPenitipan.PENGAMBILAN_TERLAMBAT);
         } else if (currentDate.equals(supposedReturnDate)) {
@@ -131,7 +132,7 @@ public class PenitipanServiceImpl implements PenitipanService{
         } else if (currentDate.isBefore(supposedReturnDate)){
             penitipan.setStatusPenitipan(StatusPenitipan.PENGAMBILAN_AWAL);
         }
-        penitipan.setTanggalDiambil(currentDate);
+        penitipan.setTanggalDiambil(LocalDateTime.now());
         penitipanRepository.save(penitipan);
         return penitipan;
     }

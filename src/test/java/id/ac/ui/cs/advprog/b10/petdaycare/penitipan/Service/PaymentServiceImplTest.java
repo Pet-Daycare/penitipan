@@ -156,7 +156,7 @@ class PaymentServiceImplTest {
         penitipan.setStatusPenitipan(StatusPenitipan.PENGAMBILAN_TEPAT);
         penitipan.setTanggalPenitipan(LocalDateTime.of(2023, 5, 1, 10, 0));
         penitipan.setTanggalPengambilan(LocalDateTime.of(2023, 5, 10, 10, 0));
-        penitipan.setTanggalDiambil(LocalDateTime.of(2023, 5, 9, 10, 0));
+        penitipan.setTanggalDiambil(LocalDateTime.of(2023, 5, 10, 10, 0));
         Double expectedPrice = 0.0;
 
         Double actualPrice = paymentService.calculatePrice(penitipan);
