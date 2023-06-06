@@ -18,7 +18,7 @@ public class AuthService {
     }
 
     public AuthTransactionDto verifyToken(String token) {
-        String otherInstanceURL = "http://localhost:8082/api/v1/auth/verify-token/" + token; // TODO : Change to main url
+        String otherInstanceURL = "http://104.198.131.227/api/v1/auth/verify-token/" + token;
         return restTemplate.getForObject((otherInstanceURL), AuthTransactionDto.class);
     }
 
