@@ -4,7 +4,6 @@ import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanAdminResp
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanRequest;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.dto.order.PenitipanUserResponse;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.PenitipanDoesNotExistException;
-import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.exceptions.PenitipanWithHewanIdDoesNotExistException;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.Penitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.model.order.StatusPenitipan;
 import id.ac.ui.cs.advprog.b10.petdaycare.penitipan.repository.PenitipanRepository;
@@ -57,33 +56,12 @@ public class PenitipanFindServiceImpl implements PenitipanFindService{
     }
 
     @Override
-    public Penitipan findByHewanId(Integer hewanId) {
-        Optional<Penitipan> optionalPenitipan = penitipanRepository.findByHewanId(hewanId);
-        if (optionalPenitipan.isEmpty()) {
-            throw new PenitipanWithHewanIdDoesNotExistException(hewanId);
-        }
-        return optionalPenitipan.get();
-    }
-
-    @Override
     public List<PenitipanAdminResponse> findAllByStatus(StatusPenitipan statusPenitipan) {
-        return penitipanRepository.findAll()
-                .stream()
-                .map(PenitipanAdminResponse::fromPenitipan)
-                .toList();
-    }
-
-    @Override
-    public List<PenitipanUserResponse> findAllByUserIdAndStatus(Integer userId, StatusPenitipan statusPenitipan) {
-        return penitipanRepository.findAllByUserIdAndStatusPenitipan(userId, statusPenitipan)
-                .stream()
-                .map(PenitipanUserResponse::fromPenitipan)
-                .toList();
-    }
-
-    @Override
-    public List<PenitipanAdminResponse> findAllByHewanIdAndStatus(Integer hewanId, StatusPenitipan statusPenitipan) {
-        return penitipanRepository.findAllByHewanIdAndStatusPenitipan(hewanId, statusPenitipan)
+        List<Penitipan> allByStatusPenitipan = penitipanRepository.findAllByStatusPenitipan(statusPenitipan);
+        if (allByStatusPenitipan == null) {
+            return new ArrayList<>();
+        }
+        return allByStatusPenitipan
                 .stream()
                 .map(PenitipanAdminResponse::fromPenitipan)
                 .toList();
