@@ -97,7 +97,6 @@ class PenitipanServiceImplTest {
         penitipanDummy.setInitialCost(paymentService.calculatePrice(penitipanDummy));
 
         PenitipanRequest createPenitipanRequest = PenitipanRequest.builder()
-                .userId(1)
                 .tanggalPenitipan(dummyDate1)
                 .tanggalPengambilan(dummyDate1)
                 .pesanPenitipan("Create Test")
@@ -106,6 +105,7 @@ class PenitipanServiceImplTest {
                 .tipeHewan("DOG")
                 .build();
 
+        when(authService.getUserId(createPenitipanRequest)).thenReturn(1);
         Penitipan result = penitipanService.create(createPenitipanRequest);
 
         assertNotNull(result);

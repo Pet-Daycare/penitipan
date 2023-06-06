@@ -119,7 +119,7 @@ class PaymentServiceImplTest {
         penitipan.setTanggalPenitipan(LocalDateTime.of(2023, 5, 1, 10, 0));
         penitipan.setTanggalPengambilan(LocalDateTime.of(2023, 5, 10, 10, 0));
         penitipan.setTanggalDiambil(LocalDateTime.of(2023, 5, 9, 10, 0));
-        Double expectedPrice = -148000.00;
+        Double expectedPrice = -115600.00;
 
         Double actualPrice = paymentService.calculatePrice(penitipan);
 
@@ -138,7 +138,7 @@ class PaymentServiceImplTest {
         penitipan.setTanggalPenitipan(LocalDateTime.of(2023, 5, 1, 10, 0));
         penitipan.setTanggalPengambilan(LocalDateTime.of(2023, 5, 10, 10, 0));
         penitipan.setTanggalDiambil(LocalDateTime.of(2023, 5, 11, 10, 0));
-        Double expectedPrice = 148000.00;
+        Double expectedPrice = 144400.00;
 
         Double actualPrice = paymentService.calculatePrice(penitipan);
 
