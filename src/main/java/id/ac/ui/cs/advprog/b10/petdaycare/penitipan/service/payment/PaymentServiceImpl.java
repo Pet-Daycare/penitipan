@@ -31,10 +31,10 @@ public class PaymentServiceImpl implements PaymentService {
 
         StatusPenitipan statusPenitipan = penitipan.getStatusPenitipan();
         LocalDateTime tanggalTitip = penitipan.getTanggalPenitipan();
+        LocalDateTime tanggalPengambilan = penitipan.getTanggalPengambilan();
         Integer beratHewan = penitipan.getHewan().getBeratHewan();
 
         if (statusPenitipan == StatusPenitipan.UNVERIFIED_PENITIPAN) {
-            LocalDateTime tanggalPengambilan = penitipan.getTanggalPengambilan();
             Duration lamaTitip = Duration.between(tanggalTitip,tanggalPengambilan);
             double lamaJamTitip = lamaTitip.toHours();
             return penitipanCost.getInitialCost(lamaJamTitip, beratHewan);

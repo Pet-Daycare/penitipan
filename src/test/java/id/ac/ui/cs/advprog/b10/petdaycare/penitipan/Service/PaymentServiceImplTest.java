@@ -31,13 +31,12 @@ class PaymentServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         paymentService = new PaymentServiceImpl();
     }
 
     @Test
     void testCalculatePrice_UnverifiedPenitipan() {
-        // Arrange
         Hewan hewan = new Hewan();
         hewan.setTipeHewan(TipeHewan.DOG);
         hewan.setBeratHewan(1);
@@ -49,11 +48,137 @@ class PaymentServiceImplTest {
         penitipan.setTanggalPengambilan(LocalDateTime.of(2023, 5, 1, 11, 0));
         Double expectedPrice = 24000.00;
 
-        // Act
         Double actualPrice = paymentService.calculatePrice(penitipan);
 
-        // Assert
         Assertions.assertEquals(expectedPrice, actualPrice);
     }
 
+    @Test
+    void testCalculatePrice_CatCostCalculator() {
+        Hewan hewan = new Hewan();
+        hewan.setTipeHewan(TipeHewan.CAT);
+        hewan.setBeratHewan(1);
+
+        Penitipan penitipan = new Penitipan();
+        penitipan.setHewan(hewan);
+        penitipan.setStatusPenitipan(StatusPenitipan.UNVERIFIED_PENITIPAN);
+        penitipan.setTanggalPenitipan(LocalDateTime.of(2023, 5, 1, 10, 0));
+        penitipan.setTanggalPengambilan(LocalDateTime.of(2023, 5, 1, 11, 0));
+        Double expectedPrice = 10000.00;
+
+        Double actualPrice = paymentService.calculatePrice(penitipan);
+
+        Assertions.assertEquals(expectedPrice, actualPrice);
+    }
+
+    @Test
+    void testCalculatePrice_RabbitCostCalculator() {
+        Hewan hewan = new Hewan();
+        hewan.setTipeHewan(TipeHewan.RABBIT);
+        hewan.setBeratHewan(1);
+
+        Penitipan penitipan = new Penitipan();
+        penitipan.setHewan(hewan);
+        penitipan.setStatusPenitipan(StatusPenitipan.UNVERIFIED_PENITIPAN);
+        penitipan.setTanggalPenitipan(LocalDateTime.of(2023, 5, 1, 10, 0));
+        penitipan.setTanggalPengambilan(LocalDateTime.of(2023, 5, 1, 11, 0));
+        Double expectedPrice = 26000.00;
+
+        Double actualPrice = paymentService.calculatePrice(penitipan);
+
+        Assertions.assertEquals(expectedPrice, actualPrice);
+    }
+
+    @Test
+    void testCalculatePrice_OtherCostCalculator() {
+        Hewan hewan = new Hewan();
+        hewan.setTipeHewan(TipeHewan.OTHER);
+        hewan.setBeratHewan(1);
+
+        Penitipan penitipan = new Penitipan();
+        penitipan.setHewan(hewan);
+        penitipan.setStatusPenitipan(StatusPenitipan.UNVERIFIED_PENITIPAN);
+        penitipan.setTanggalPenitipan(LocalDateTime.of(2023, 5, 1, 10, 0));
+        penitipan.setTanggalPengambilan(LocalDateTime.of(2023, 5, 1, 11, 0));
+        Double expectedPrice = 69000.00;
+
+        Double actualPrice = paymentService.calculatePrice(penitipan);
+
+        Assertions.assertEquals(expectedPrice, actualPrice);
+    }
+
+    @Test
+    void testCalculateCompletionCost_PENGAMBILAN_AWAL(){
+        Hewan hewan = new Hewan();
+        hewan.setTipeHewan(TipeHewan.CAT);
+        hewan.setBeratHewan(1);
+
+        Penitipan penitipan = new Penitipan();
+        penitipan.setHewan(hewan);
+        penitipan.setStatusPenitipan(StatusPenitipan.PENGAMBILAN_AWAL);
+        penitipan.setTanggalPenitipan(LocalDateTime.of(2023, 5, 1, 10, 0));
+        penitipan.setTanggalPengambilan(LocalDateTime.of(2023, 5, 10, 10, 0));
+        penitipan.setTanggalDiambil(LocalDateTime.of(2023, 5, 9, 10, 0));
+        Double expectedPrice = -115600.00;
+
+        Double actualPrice = paymentService.calculatePrice(penitipan);
+
+        Assertions.assertEquals(expectedPrice, actualPrice);
+    }
+
+    @Test
+    void testCalculateCompletionCost_PENGAMBILAN_TERLAMBAT(){
+        Hewan hewan = new Hewan();
+        hewan.setTipeHewan(TipeHewan.CAT);
+        hewan.setBeratHewan(1);
+
+        Penitipan penitipan = new Penitipan();
+        penitipan.setHewan(hewan);
+        penitipan.setStatusPenitipan(StatusPenitipan.PENGAMBILAN_TERLAMBAT);
+        penitipan.setTanggalPenitipan(LocalDateTime.of(2023, 5, 1, 10, 0));
+        penitipan.setTanggalPengambilan(LocalDateTime.of(2023, 5, 10, 10, 0));
+        penitipan.setTanggalDiambil(LocalDateTime.of(2023, 5, 11, 10, 0));
+        Double expectedPrice = 144400.00;
+
+        Double actualPrice = paymentService.calculatePrice(penitipan);
+
+        Assertions.assertEquals(expectedPrice, actualPrice);
+    }
+
+    @Test
+    void testCalculateCompletionCost_PENGAMBILAN_TEPAT(){
+        Hewan hewan = new Hewan();
+        hewan.setTipeHewan(TipeHewan.CAT);
+        hewan.setBeratHewan(1);
+
+        Penitipan penitipan = new Penitipan();
+        penitipan.setHewan(hewan);
+        penitipan.setStatusPenitipan(StatusPenitipan.PENGAMBILAN_TEPAT);
+        penitipan.setTanggalPenitipan(LocalDateTime.of(2023, 5, 1, 10, 0));
+        penitipan.setTanggalPengambilan(LocalDateTime.of(2023, 5, 10, 10, 0));
+        penitipan.setTanggalDiambil(LocalDateTime.of(2023, 5, 10, 10, 0));
+        Double expectedPrice = 0.0;
+
+        Double actualPrice = paymentService.calculatePrice(penitipan);
+
+        Assertions.assertEquals(expectedPrice, actualPrice);
+    }
+
+    @Test
+    void testCalculateCompletionCost_OTHER_STATUS(){
+        Hewan hewan = new Hewan();
+        hewan.setTipeHewan(TipeHewan.CAT);
+        hewan.setBeratHewan(1);
+
+        Penitipan penitipan = new Penitipan();
+        penitipan.setHewan(hewan);
+        penitipan.setStatusPenitipan(StatusPenitipan.CANCELED_PENITIPAN);
+        penitipan.setTanggalPenitipan(LocalDateTime.of(2023, 5, 1, 10, 0));
+        penitipan.setTanggalPengambilan(LocalDateTime.of(2023, 5, 10, 10, 0));
+        penitipan.setTanggalDiambil(LocalDateTime.of(2023, 5, 9, 10, 0));
+
+        Double actualPrice = paymentService.calculatePrice(penitipan);
+
+        Assertions.assertNull(actualPrice);
+    }
 }

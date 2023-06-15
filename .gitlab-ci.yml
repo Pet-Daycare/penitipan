@@ -26,6 +26,7 @@ sonarcloud-check:
     - merge_requests
     - master
     - develop
+    - post-sprint-revision
   allow_failure: true
 
 stages:
@@ -74,7 +75,6 @@ Test:
   coverage: '/Total.*?([0-9]{1,3})%/'
   allow_failure: true
 
-
 Publish:
   stage: publish
   image: docker:latest
@@ -92,7 +92,7 @@ Publish:
     - dind
   only:
     - master
-
+    - post-sprint-revision
 
 Deploy:
   stage: deploy
@@ -107,3 +107,4 @@ Deploy:
       docker run --name $CONTAINER_NAME -d -p 80:8080 $REGISTRY_USER/$IMAGE_NAME:$IMAGE_TAG"
   only:
     - master
+    - post-sprint-revision
